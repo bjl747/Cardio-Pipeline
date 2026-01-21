@@ -63,6 +63,8 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
+let openPanelId = null; // Track open panel globally
+
 // --- 3. UI INTERACTIONS ---
 document.addEventListener('DOMContentLoaded', () => {
     const emailInput = document.getElementById('loginEmail');
@@ -130,7 +132,17 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('availDate').value = localToday.toISOString().split('T')[0];
         };
     }
+    setupPhoneFormatting(); // new helper
 });
+
+function setupPhoneFormatting() {
+    const phoneInput = document.getElementById('phone');
+    if (!phoneInput) return;
+    phoneInput.addEventListener('input', (e) => {
+        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+        e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+    });
+}
 
 function populatePayDropdown() {
     const select = document.getElementById('payReq');
@@ -273,7 +285,7 @@ function renderList() {
                             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Contact Link</p>
                             <div class="flex items-center gap-2 text-slate-300">
                                 <svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                <span class="font-mono">${c.email || 'N/A'}</span>
+                                <a href="mailto:${c.email}" class="font-mono hover:text-rose-400 hover:underline transition">${c.email || 'N/A'}</a>
                             </div>
                             <div class="flex items-center gap-2 text-slate-300 mt-2">
                                 <svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
@@ -345,6 +357,18 @@ function renderList() {
                 </div>
             </div>
         `;
+        // Check if this panel should be open (persist state)
+        if (openPanelId === c.id) {
+            setTimeout(() => {
+                const p = document.getElementById(`details-${c.id}`);
+                const a = document.getElementById(`arrow-${c.id}`);
+                if (p && a) {
+                    p.classList.add('open');
+                    a.classList.add('rotate-180');
+                }
+            }, 50);
+        }
+
         listContainer.appendChild(card);
     });
 }
@@ -454,11 +478,13 @@ window.toggleDetails = function (id) {
     if (panel.classList.contains('open')) {
         panel.classList.remove('open');
         arrow.classList.remove('rotate-180');
+        openPanelId = null; // Clear global state
     } else {
         document.querySelectorAll('.details-panel').forEach(el => el.classList.remove('open'));
         document.querySelectorAll('[id^="arrow-"]').forEach(el => el.classList.remove('rotate-180'));
         panel.classList.add('open');
         arrow.classList.add('rotate-180');
+        openPanelId = id; // Set global state
     }
 };
 
