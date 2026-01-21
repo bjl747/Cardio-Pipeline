@@ -672,6 +672,16 @@ function setupModal() {
                     await addDoc(colRef, newDoc);
 
                     if (sendEmail) {
+                        // Determine Target Email (Same logic as Hot List)
+                        let targetEmail = currentUser.email;
+                        try {
+                            const userDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid);
+                            const userSnap = await getDoc(userDocRef);
+                            if (userSnap.exists() && userSnap.data().officialEmail) {
+                                targetEmail = userSnap.data().officialEmail;
+                            }
+                        } catch (err) { console.warn("Profile fetch warning:", err); }
+
                         const webhookUrl = "https://hook.us2.make.com/pxbfgeonx5iyasmm83855wehl31jydrh";
                         fetch(webhookUrl, {
                             method: "POST",
@@ -681,7 +691,9 @@ function setupModal() {
                                 email: formValues.email,
                                 phone: formValues.phone,
                                 credential: formValues.credential,
-                                notes: formValues.notes
+                                notes: formValues.notes,
+                                targetEmail: targetEmail,
+                                ownerName: newDoc.ownerName
                             })
                         }).then(response => {
                             if (response.ok) showToast(`Pipeline Initiated: ${formValues.fullName}`);
