@@ -4,11 +4,17 @@ All notable changes to the "Pipeline Tracker" project will be documented in this
 
 ## [1.7.0] - 2026-01-21
 ### Added
+- **Geo Preferences**:
+    - **Open Geo Toggle**: Added "Open Geo" checkbox above the map. Selecting it clears the map and sets the preference to "OPEN".
+    - **Region Buttons**: Added a grid of region buttons (NW, NE, Midwest, etc.) below the map for quick selection of multiple states.
 - **"Talked" Logger**: Added a "Talked" button to the candidate details panel. Clicking it logs the current timestamp and displays the "Last Talked" date/time immediately next to the button.
 - **Pay Requirements**: Added "Pay Requirements" (`$/wk`) display to the expanded candidate profile.
 
 ### Changed
 - **UI Colors**: Updated "Active Licenses" and "Certifications" badges to use **Amber/Yellow** styling (instead of Rose/Indigo) for better visibility and theme consistency.
+
+### Fixed
+- **Pay Data Usage**: Fixed an issue where Pay Requirements were saving under a legacy key (`pay`) but trying to display a new key (`payReq`). Unified logic to use `payReq` for all new saves and fallback to `pay` for existing records.
 
 ## [1.6.0] - 2026-01-21
 ### Added

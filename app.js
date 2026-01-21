@@ -459,7 +459,7 @@ function renderList() {
                         </div>
                         <div>
                             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Pay Requirements</p>
-                            <p class="text-slate-300 font-mono text-xs">${c.payReq ? `$${c.payReq}/wk` : 'Open'}</p>
+                            <p class="text-slate-300 font-mono text-xs">${(c.payReq || c.pay) ? `$${c.payReq || c.pay}/wk` : 'Open'}</p>
                         </div>
                         <div>
                             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Active Licenses</p>
@@ -756,7 +756,7 @@ function setupModal() {
                 availDate: document.getElementById('availDate').value,
                 email: document.getElementById('email').value,
                 phone: document.getElementById('phone').value,
-                pay: document.getElementById('payReq').value,
+                payReq: document.getElementById('payReq').value,
                 shift: document.getElementById('shiftPref').value,
                 units: selectedUnits,
                 certs: selectedCerts,

@@ -306,8 +306,15 @@
 
                     <!-- MAP PICKER CONTAINER -->
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Location Preferences (Click
-                            states)</label>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="block text-xs font-bold text-slate-400 uppercase">Location Preferences</label>
+                            <label
+                                class="flex items-center gap-2 cursor-pointer bg-slate-900 border border-slate-700 px-3 py-1 rounded hover:bg-slate-800 transition">
+                                <span class="text-[10px] font-bold text-emerald-500 uppercase">Open Geo</span>
+                                <input type="checkbox" id="openGeoToggle" onchange="window.toggleOpenGeo(this.checked)"
+                                    class="accent-emerald-500 h-3 w-3">
+                            </label>
+                        </div>
                         <div id="map-container"
                             class="w-full h-64 bg-slate-900 border border-slate-700 rounded flex items-center justify-center overflow-hidden relative">
                             <svg viewBox="0 0 1100 800" xmlns="http://www.w3.org/2000/svg"
@@ -418,6 +425,28 @@
                                         d="M499.16,180.45L495.46,226.79L491.58,271.97L474.43,270.36L440.2,266.58L423.12,264.4L406.05,262.04L372.15,256.16L375.87,234.37L385.21,178.56L384.7,178.06L385.13,177.31L386.97,165.87L418.47,170.63L443.38,174.28L472.33,177.57z" />
                                 </g>
                             </svg>
+                        </div>
+
+                        <!-- Region Buttons -->
+                        <div class="grid grid-cols-4 gap-2 mt-2">
+                            <button type="button" onclick="window.selectRegion('Northwest')"
+                                class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 py-1 rounded border border-slate-700 transition">NW</button>
+                            <button type="button" onclick="window.selectRegion('Midwest')"
+                                class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 py-1 rounded border border-slate-700 transition">Midwest</button>
+                            <button type="button" onclick="window.selectRegion('Northeast')"
+                                class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 py-1 rounded border border-slate-700 transition">NE</button>
+                            <button type="button" onclick="window.selectRegion('East')"
+                                class="text-[10px] bg-indigo-900/30 hover:bg-indigo-900/50 text-indigo-300 py-1 rounded border border-indigo-900/30 transition">East</button>
+
+                            <button type="button" onclick="window.selectRegion('Southwest')"
+                                class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 py-1 rounded border border-slate-700 transition">SW</button>
+                            <button type="button" onclick="window.selectRegion('South Central')"
+                                class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 py-1 rounded border border-slate-700 transition">S.
+                                Central</button>
+                            <button type="button" onclick="window.selectRegion('Southeast')"
+                                class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 py-1 rounded border border-slate-700 transition">SE</button>
+                            <button type="button" onclick="window.selectRegion('West')"
+                                class="text-[10px] bg-indigo-900/30 hover:bg-indigo-900/50 text-indigo-300 py-1 rounded border border-indigo-900/30 transition">West</button>
                         </div>
                     </div>
 
