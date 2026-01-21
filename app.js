@@ -291,12 +291,16 @@ window.deleteCandidate = async function (id) {
         // If ownerId is missing, assume it's mine (old logic).
         const targetOwnerId = c.ownerId || currentUser.uid;
 
+        console.log(`[DELETE DEBUG] Attempting to delete: ${id}`);
+        console.log(`[DELETE DEBUG] Identified Owner: ${targetOwnerId} (Current User: ${currentUser.uid})`);
+        console.log(`[DELETE DEBUG] Path: artifacts/${appId}/users/${targetOwnerId}/candidates/${id}`);
+
         try {
             await deleteDoc(doc(db, 'artifacts', appId, 'users', targetOwnerId, 'candidates', id));
-            showToast("Candidate Deleted");
+            showToast(`Deleted from owner: ${targetOwnerId}`);
         } catch (e) {
             console.error("Delete failed:", e);
-            showToast("Delete Failed: Permission specific?");
+            showToast(`Delete Failed: ${e.message}`);
         }
     }
 }
