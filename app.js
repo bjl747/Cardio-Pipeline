@@ -34,6 +34,7 @@ setPersistence(auth, browserSessionPersistence)
 onAuthStateChanged(auth, (user) => {
     const overlay = document.getElementById('loginOverlay');
     const logoutBtn = document.getElementById('btnLogout');
+    const adminBtn = document.getElementById('adminEmailBtn');
     const headerTitle = document.querySelector('h1');
 
     if (user) {
@@ -41,6 +42,13 @@ onAuthStateChanged(auth, (user) => {
         currentUser = user;
         overlay.classList.add('hidden');
         logoutBtn.classList.remove('hidden');
+
+        // Admin Button Logic
+        if (user.email === 'ben.layher@gmail.com' && adminBtn) {
+            adminBtn.classList.remove('hidden');
+        } else if (adminBtn) {
+            adminBtn.classList.add('hidden');
+        }
 
         const shortName = (user.email === 'ben.layher@gmail.com' ? 'BJ Layher' : (user.displayName || user.email.split('@')[0]));
 
@@ -894,7 +902,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             btn.innerHTML = `<span class="animate-pulse">Sending...</span>`;
 
-            // 2. Determine Target Email
+            // 2. Determine Target Email (Exact match to Email List Logic)
             let targetEmail = currentUser && currentUser.email ? currentUser.email : "unknown@example.com";
 
             // Attempt to fetch override (fail gracefully)
@@ -938,6 +946,84 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast("Network Error: Could not reach automation.");
             } finally {
                 setTimeout(() => btn.innerHTML = originalText, 2000);
+            }
+        };
+    }
+
+    // --- ADMIN EMAIL BUTTON LOGIC ---
+    const adminBtn = document.getElementById('adminEmailBtn');
+    if (adminBtn) {
+        adminBtn.onclick = async () => {
+            const originalText = adminBtn.innerHTML;
+            adminBtn.innerHTML = `<span class="animate-pulse">Fetching Team Data...</span>`;
+
+            try {
+                // 1. Fetch ALL candidates fresh (Snapshot of global team view)
+                const q = query(collectionGroup(db, 'candidates'));
+                const snapshot = await getDocs(q);
+
+                const today = new Date();
+                const rawList = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    const ownerId = data.ownerId || (doc.ref.parent.parent ? doc.ref.parent.parent.id : 'unknown');
+                    return { id: doc.id, ...data, ownerId: ownerId };
+                });
+
+                // 2. Filter for Hot (<= 45 Days)
+                const adminHotList = rawList.filter(c => {
+                    const targetDate = new Date(c.availDate);
+                    const diffTime = targetDate - today;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    return diffDays <= 45;
+                }).map(c => ({
+                    Recruiter: c.ownerName || userMap[c.ownerId] || "Unknown", // First Column!
+                    Name: c.fullName,
+                    Avail: c.availDate,
+                    Cred: c.credential,
+                    Lic: c.licenses || "N/A",
+                    Units: c.units || "N/A",
+                    Loc: c.states || "Open",
+                    Pay: c.pay || "Open",
+                    Status: c.status
+                }));
+
+                if (adminHotList.length === 0) {
+                    showToast("No team candidates available in 45 days.");
+                    adminBtn.innerHTML = originalText;
+                    return;
+                }
+
+                // 3. Determine Admin Target Email
+                let targetEmail = currentUser && currentUser.email ? currentUser.email : "ben.layher@gmail.com";
+                // Optionally fetch override again, but admin is usually fixed. 
+                // We'll stick to same robust logic just in case.
+                try {
+                    const userDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid);
+                    const userSnap = await getDoc(userDocRef);
+                    if (userSnap.exists() && userSnap.data().officialEmail) {
+                        targetEmail = userSnap.data().officialEmail;
+                    }
+                } catch (e) { }
+
+                // 4. Send to Webhook
+                const listWebhookUrl = "https://hook.us2.make.com/4alhbwlqbiyo9sl3ekv9wbxjap1sr7fi";
+                const response = await fetch(listWebhookUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        candidateList: JSON.stringify(adminHotList),
+                        targetEmail: targetEmail
+                    })
+                });
+
+                if (response.ok) showToast(`Team List sent to ${targetEmail}`);
+                else showToast("Error sending team list.");
+
+            } catch (e) {
+                console.error("Admin Email Error:", e);
+                showToast("Error generating admin list.");
+            } finally {
+                setTimeout(() => adminBtn.innerHTML = originalText, 2000);
             }
         };
     }
