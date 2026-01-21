@@ -781,20 +781,25 @@ function setupModal() {
                     await addDoc(colRef, newDoc);
 
                     if (sendEmail) {
-                        // Determine Target Email (Same logic as Hot List)
-                        let targetEmail = currentUser.email;
-                        console.log("Determining Target Email for Webhook..."); // DEBUG
-                        try {
-                            const userDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid);
-                            const userSnap = await getDoc(userDocRef);
-                            if (userSnap.exists() && userSnap.data().officialEmail) {
-                                targetEmail = userSnap.data().officialEmail;
-                                console.log("Found Official Override:", targetEmail); // DEBUG
-                            } else {
-                                console.log("No Official Email found. Using Login Email:", targetEmail); // DEBUG
+                        // Determine Target Email (Exact match to Email List Logic)
+                        let targetEmail = currentUser && currentUser.email ? currentUser.email : "unknown@example.com";
+
+                        // Attempt to fetch override (fail gracefully)
+                        if (currentUser) {
+                            try {
+                                const userDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid);
+                                const userSnap = await getDoc(userDocRef);
+
+                                if (userSnap.exists() && userSnap.data().officialEmail) {
+                                    targetEmail = userSnap.data().officialEmail;
+                                    console.log("Using Official Email Override:", targetEmail);
+                                } else {
+                                    console.log("Using Login Email (No Override Found):", targetEmail);
+                                }
+                            } catch (profileErr) {
+                                console.warn("Profile fetch failed, defaulting to login email:", profileErr);
+                                // Do not stop! Proceed with default email.
                             }
-                        } catch (err) {
-                            console.warn("Profile fetch warning:", err);
                         }
 
                         console.log("Sending Webhook Payload...", { candidate: formValues.fullName, target: targetEmail }); // DEBUG
