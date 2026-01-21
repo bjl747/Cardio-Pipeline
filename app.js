@@ -1,7 +1,7 @@
 // --- FIREBASE SETUP ---
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, onSnapshot, updateDoc, deleteDoc, doc, query, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, onSnapshot, updateDoc, deleteDoc, doc, query, getDoc, collectionGroup, where, orderBy } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBUfky5nGOCIxFDjCr6vbEqH0SlDygwYkc",
@@ -18,8 +18,11 @@ const db = getFirestore(app);
 
 const appId = 'default-app-id';
 let currentUser = null;
+// let currentUser = null; // Removed duplicate
 let candidates = [];
 let editingId = null;
+let currentView = 'mine'; // 'mine' or 'team'
+let unsubscribeCandidates = null; // To handle switching listeners
 
 // --- 1. SESSION PERSISTENCE ---
 setPersistence(auth, browserSessionPersistence)
@@ -44,16 +47,10 @@ onAuthStateChanged(auth, (user) => {
         }
 
         console.log("Loading data for:", user.uid);
-        const q = query(collection(db, 'artifacts', appId, 'users', user.uid, 'candidates'));
-
-        onSnapshot(q, (snapshot) => {
-            candidates = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            performAutoRollover();
-            renderList();
-        });
-
+        loadMyCandidates(); // Default to my view
     } else {
         // LOGGED OUT
+        if (unsubscribeCandidates) unsubscribeCandidates();
         currentUser = null;
         candidates = [];
         renderList();
@@ -62,6 +59,81 @@ onAuthStateChanged(auth, (user) => {
         if (headerTitle) headerTitle.innerHTML = `HOT LIST`;
     }
 });
+
+// --- FETCHING LOGIC ---
+function loadMyCandidates() {
+    if (!currentUser) return;
+    if (unsubscribeCandidates) unsubscribeCandidates();
+
+    currentView = 'mine';
+    updateTabs();
+
+    const q = query(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'candidates'));
+    unsubscribeCandidates = onSnapshot(q, (snapshot) => {
+        candidates = snapshot.docs.map(doc => {
+            // For MY candidates, I am the owner.
+            return { id: doc.id, ...doc.data(), ownerId: currentUser.uid };
+        });
+        performAutoRollover();
+        renderList();
+    });
+}
+
+function loadTeamCandidates() {
+    if (!currentUser) return;
+    if (unsubscribeCandidates) unsubscribeCandidates();
+
+    currentView = 'team';
+    updateTabs();
+
+    // Query ALL candidates from ALL users that are active (availDate logic is tricky in query, so getting all and filtering client side for now or using simple date filter if possible)
+    // To keep it robust, we will fetch 'candidates' collection group.
+    // Important: Requires Index? Maybe.
+    const q = query(collectionGroup(db, 'candidates'));
+
+    unsubscribeCandidates = onSnapshot(q, (snapshot) => {
+        const today = new Date();
+        const rawList = snapshot.docs.map(doc => {
+            // Must capture parent ID as ownerId if not stored
+            const data = doc.data();
+            const ownerId = data.ownerId || doc.ref.parent.parent.id;
+            return { id: doc.id, ...data, ownerId: ownerId };
+        });
+
+        // Filter for "Cardio 45" (Avail <= 45 Days)
+        candidates = rawList.filter(c => {
+            const targetDate = new Date(c.availDate);
+            const diffTime = targetDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays <= 45; // Only show hot candidates in team view
+        });
+
+        renderList();
+    }, (error) => {
+        console.error("Team Query Error:", error);
+        showToast("Error loading team data. Valid Indexes?");
+    });
+}
+
+window.switchTab = function (view) {
+    if (view === currentView) return;
+    if (view === 'mine') loadMyCandidates();
+    if (view === 'team') loadTeamCandidates();
+}
+
+function updateTabs() {
+    const btnMine = document.getElementById('tabMine');
+    const btnTeam = document.getElementById('tabTeam');
+    if (!btnMine || !btnTeam) return;
+
+    if (currentView === 'mine') {
+        btnMine.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-rose-500 border-b-2 border-rose-500 bg-slate-900/30 transition-all hover:bg-slate-900/50";
+        btnTeam.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-slate-500 hover:text-slate-300 border-b-2 border-transparent hover:border-slate-800 transition-all";
+    } else {
+        btnMine.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-slate-500 hover:text-slate-300 border-b-2 border-transparent hover:border-slate-800 transition-all";
+        btnTeam.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-rose-500 border-b-2 border-rose-500 bg-slate-900/30 transition-all hover:bg-slate-900/50";
+    }
+}
 
 let openPanelId = null; // Track open panel globally
 
@@ -261,7 +333,9 @@ function renderList() {
                         <div class="flex items-center gap-3">
                             <h3 class="font-bold text-xl text-slate-100 group-hover:text-white transition tracking-wide">${c.fullName}</h3>
                             ${pipelineBar}
+                            ${pipelineBar}
                             ${resumeBadgeHtml}
+                            ${(c.ownerId && c.ownerId !== currentUser.uid) ? '<span class="text-[10px] text-slate-500 bg-slate-900 border border-slate-700 px-1 rounded">Shared</span>' : ''}
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="text-[10px] font-bold text-slate-900 bg-slate-400 px-1.5 py-0.5 rounded uppercase">${c.credential}</span>
@@ -349,11 +423,12 @@ function renderList() {
                 
                 <div class="px-6 pb-6 pt-0 flex justify-end gap-3 border-t border-slate-800/30 mt-4 pt-4">
                     <button onclick="window.editCandidate('${c.id}')" class="text-xs font-bold text-slate-400 hover:text-white uppercase tracking-wider px-3 py-2 border border-slate-700 rounded hover:bg-slate-800 transition">
-                        Edit Details
+                        ${(c.ownerId && c.ownerId !== currentUser.uid) ? 'Edit (Shared)' : 'Edit Details'}
                     </button>
+                    ${(!c.ownerId || c.ownerId === currentUser.uid) ? `
                     <button onclick="window.deleteCandidate('${c.id}')" class="text-xs font-bold text-rose-500 hover:text-rose-400 uppercase tracking-wider px-3 py-2 border border-rose-900/30 rounded hover:bg-rose-900/20 transition">
                         Delete
-                    </button>
+                    </button>` : ''}
                 </div>
             </div>
         `;
@@ -532,11 +607,32 @@ function setupModal() {
             const sendEmail = document.getElementById('sendEmailToggle').checked;
             try {
                 if (editingId) {
-                    const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'candidates', editingId);
+                    // Updating an existing candidate
+                    // Check if I am the owner. If not, append audit trail.
+                    const existingC = candidates.find(c => c.id === editingId);
+
+                    if (existingC && existingC.ownerId && existingC.ownerId !== currentUser.uid) {
+                        const time = new Date().toLocaleString();
+                        const auditNote = `\n[Last Edit: ${currentUser.displayName || currentUser.email} - ${time}]`;
+                        formValues.notes = (formValues.notes || "") + auditNote;
+                    }
+
+                    // For updates, we need to know the PATH. 
+                    // If shared, the path is users/{ownerId}/candidates/{docId}
+                    const targetOwnerId = (existingC && existingC.ownerId) ? existingC.ownerId : currentUser.uid;
+
+                    const docRef = doc(db, 'artifacts', appId, 'users', targetOwnerId, 'candidates', editingId);
                     await updateDoc(docRef, formValues);
                     showToast("Candidate Updated");
                 } else {
-                    const newDoc = { ...formValues, status: "Qualified", createdAt: new Date().toISOString() };
+                    // Creating new - Add owner info
+                    const newDoc = {
+                        ...formValues,
+                        status: "Qualified",
+                        createdAt: new Date().toISOString(),
+                        ownerId: currentUser.uid,
+                        ownerName: currentUser.displayName || currentUser.email
+                    };
                     const colRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'candidates');
                     await addDoc(colRef, newDoc);
 
