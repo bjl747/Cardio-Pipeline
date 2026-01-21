@@ -283,8 +283,21 @@ async function performAutoRollover() {
 
 window.deleteCandidate = async function (id) {
     if (confirm("Are you sure you want to delete this candidate?")) {
-        await deleteDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'candidates', id));
-        showToast("Candidate Deleted");
+        const c = candidates.find(x => x.id === id);
+        if (!c) return;
+
+        // If I am admin (BJ), I can delete anyone. If not, only my own.
+        // The rule is also enforced on backend, but we need the correct PATH.
+        // If ownerId is missing, assume it's mine (old logic).
+        const targetOwnerId = c.ownerId || currentUser.uid;
+
+        try {
+            await deleteDoc(doc(db, 'artifacts', appId, 'users', targetOwnerId, 'candidates', id));
+            showToast("Candidate Deleted");
+        } catch (e) {
+            console.error("Delete failed:", e);
+            showToast("Delete Failed: Permission specific?");
+        }
     }
 }
 
