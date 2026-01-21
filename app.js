@@ -291,13 +291,9 @@ window.deleteCandidate = async function (id) {
         // If ownerId is missing, assume it's mine (old logic).
         const targetOwnerId = c.ownerId || currentUser.uid;
 
-        console.log(`[DELETE DEBUG] Attempting to delete: ${id}`);
-        console.log(`[DELETE DEBUG] Identified Owner: ${targetOwnerId} (Current User: ${currentUser.uid})`);
-        console.log(`[DELETE DEBUG] Path: artifacts/${appId}/users/${targetOwnerId}/candidates/${id}`);
-
         try {
             await deleteDoc(doc(db, 'artifacts', appId, 'users', targetOwnerId, 'candidates', id));
-            showToast(`Deleted from owner: ${targetOwnerId}`);
+            showToast("Candidate Deleted");
         } catch (e) {
             console.error("Delete failed:", e);
             showToast(`Delete Failed: ${e.message}`);
@@ -659,10 +655,6 @@ function setupModal() {
                     // For updates, we need to know the PATH. 
                     // If shared, the path is users/{ownerId}/candidates/{docId}
                     const targetOwnerId = (existingC && existingC.ownerId) ? existingC.ownerId : currentUser.uid;
-
-                    console.log(`[SAVE DEBUG] Editing ID: ${editingId}`);
-                    console.log(`[SAVE DEBUG] Target Owner: ${targetOwnerId}`);
-                    console.log(`[SAVE DEBUG] Form Values: `, formValues);
 
                     const docRef = doc(db, 'artifacts', appId, 'users', targetOwnerId, 'candidates', editingId);
                     await updateDoc(docRef, formValues);
