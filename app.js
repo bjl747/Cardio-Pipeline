@@ -641,6 +641,11 @@ function setupModal() {
             };
             const sendEmail = document.getElementById('sendEmailToggle').checked;
             try {
+                if (sendEmail && !formValues.email) {
+                    showToast("Error: Candidate Email Required for Automation");
+                    return;
+                }
+
                 if (editingId) {
                     // Updating an existing candidate
                     // Check if I am the owner. If not, append audit trail.
@@ -674,13 +679,21 @@ function setupModal() {
                     if (sendEmail) {
                         // Determine Target Email (Same logic as Hot List)
                         let targetEmail = currentUser.email;
+                        console.log("Determining Target Email for Webhook..."); // DEBUG
                         try {
                             const userDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid);
                             const userSnap = await getDoc(userDocRef);
                             if (userSnap.exists() && userSnap.data().officialEmail) {
                                 targetEmail = userSnap.data().officialEmail;
+                                console.log("Found Official Override:", targetEmail); // DEBUG
+                            } else {
+                                console.log("No Official Email found. Using Login Email:", targetEmail); // DEBUG
                             }
-                        } catch (err) { console.warn("Profile fetch warning:", err); }
+                        } catch (err) {
+                            console.warn("Profile fetch warning:", err);
+                        }
+
+                        console.log("Sending Webhook Payload...", { candidate: formValues.fullName, target: targetEmail }); // DEBUG
 
                         const webhookUrl = "https://hook.us2.make.com/pxbfgeonx5iyasmm83855wehl31jydrh";
                         fetch(webhookUrl, {
