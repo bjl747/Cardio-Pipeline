@@ -815,7 +815,7 @@ function setupModal() {
                                 credential: formValues.credential,
                                 certs: formValues.certs,
                                 notes: formValues.notes,
-                                targetEmail: targetEmail,
+                                targetEmail: targetEmail || currentUser?.email || "missing_target_email_error",
                                 ownerName: newDoc.ownerName
                             })
                         }).then(response => {
