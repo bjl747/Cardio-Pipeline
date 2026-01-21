@@ -2,6 +2,21 @@
 
 All notable changes to the "Pipeline Tracker" project will be documented in this file.
 
+## [1.6.0] - 2026-01-21
+### Added
+- **Admin Team Email Button**: Added a dedicated "Admin Team List" button (visible only to admin) that emails the "Cardio 45" team list to the admin, with "Recruiter" as the first data column.
+- **Login Error Handling**: Added a robust error catcher to the "Connecting..." state. If Firebase fails to load (permissions/network), it now prompts the user to "Logout and Retry" instead of freezing.
+- **Fire-to-Ice Theme**: Refactored urgency colors:
+    - **Hot (< 45 Days)**: Now **Red**.
+    - **Warm (45-90 Days)**: **Yellow** (Unchanged).
+    - **Cold (90+ Days)**: Now **Blue/Cyan** (Ice).
+    - Updated glows and legend to match.
+
+### Changed
+- **Phone Interaction**: Clicking a phone number in the detailed view now **Copies to Clipboard** instead of attempting to open a call handler. A toast notification confirms success.
+
+### Fixed
+- **Make Automation Crash**: Added a fallback for `targetEmail` in the webhook payload. If the email is undefined, it defaults to a safe string to prevent `JSON.stringify` from stripping the key and causing a "Missing Value" error in Make.
 ## [1.5.0] - 2026-01-21
 ### Added
 - **Dynamic Welcome Email**: The "Trigger Welcome Email" checkbox now dynamically routes the notification to the recruiter's `officialEmail` (or login email), matching the Hot List logic.
