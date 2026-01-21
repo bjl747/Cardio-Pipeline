@@ -2,6 +2,14 @@
 
 All notable changes to the "Pipeline Tracker" project will be documented in this file.
 
+## [1.7.0] - 2026-01-21
+### Added
+- **"Talked" Logger**: Added a "Talked" button to the candidate details panel. Clicking it logs the current timestamp and displays the "Last Talked" date/time immediately next to the button.
+- **Pay Requirements**: Added "Pay Requirements" (`$/wk`) display to the expanded candidate profile.
+
+### Changed
+- **UI Colors**: Updated "Active Licenses" and "Certifications" badges to use **Amber/Yellow** styling (instead of Rose/Indigo) for better visibility and theme consistency.
+
 ## [1.6.0] - 2026-01-21
 ### Added
 - **Admin Team Email Button**: Added a dedicated "Admin Team List" button (visible only to admin) that emails the "Cardio 45" team list to the admin, with "Recruiter" as the first data column.

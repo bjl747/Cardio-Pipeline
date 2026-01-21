@@ -458,15 +458,19 @@ function renderList() {
                             <p class="text-slate-300 leading-relaxed font-light">${c.units || 'N/A'}</p>
                         </div>
                         <div>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Pay Requirements</p>
+                            <p class="text-slate-300 font-mono text-xs">${c.payReq ? `$${c.payReq}/wk` : 'Open'}</p>
+                        </div>
+                        <div>
                             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Active Licenses</p>
                             <div class="flex flex-wrap gap-1.5">
-                                ${(c.licenses || 'N/A').split(',').map(l => `<span class="bg-rose-950/30 text-rose-400 text-[10px] px-2 py-0.5 rounded border border-rose-900/30">${l.trim()}</span>`).join('')}
+                                ${(c.licenses || 'N/A').split(',').map(l => `<span class="bg-amber-950/30 text-amber-400 text-[10px] px-2 py-0.5 rounded border border-amber-900/30">${l.trim()}</span>`).join('')}
                             </div>
                         </div>
                         <div>
                             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Certifications</p>
                             <div class="flex flex-wrap gap-1.5">
-                                ${(c.certs || 'N/A').split(',').map(ce => `<span class="bg-indigo-950/30 text-indigo-400 text-[10px] px-2 py-0.5 rounded border border-indigo-900/30">${ce.trim()}</span>`).join('')}
+                                ${(c.certs || 'N/A').split(',').map(ce => `<span class="bg-amber-950/30 text-amber-400 text-[10px] px-2 py-0.5 rounded border border-amber-900/30">${ce.trim()}</span>`).join('')}
                             </div>
                         </div>
                         <div>
@@ -482,7 +486,17 @@ function renderList() {
                     </div>
                 </div>
                 
-                <div class="px-6 pb-6 pt-0 flex justify-end gap-3 border-t border-slate-800/30 mt-4 pt-4">
+                <div class="px-6 pb-6 pt-0 flex justify-between items-center border-t border-slate-800/30 mt-4 pt-4">
+                    <div class="flex items-center gap-3">
+                        <button onclick="window.logTalk('${c.id}')" class="text-xs font-bold text-emerald-500 hover:text-emerald-400 uppercase tracking-wider px-3 py-2 border border-emerald-900/30 rounded hover:bg-emerald-900/20 transition flex items-center gap-2">
+                            <span>🕒</span> Talked
+                        </button>
+                        <span class="text-[10px] text-slate-500 font-mono">
+                            ${c.lastTalked ? `Last: ${new Date(c.lastTalked.seconds * 1000).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' })} ${new Date(c.lastTalked.seconds * 1000).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}` : 'Last: Never'}
+                        </span>
+                    </div>
+
+                    <div class="flex gap-3">
                     <button onclick="window.editCandidate('${c.id}')" class="text-xs font-bold text-slate-400 hover:text-white uppercase tracking-wider px-3 py-2 border border-slate-700 rounded hover:bg-slate-800 transition">
                         ${(c.ownerId && c.ownerId !== currentUser.uid) ? 'Edit (Shared)' : 'Edit Details'}
                     </button>
@@ -490,6 +504,7 @@ function renderList() {
                     <button onclick="window.deleteCandidate('${c.id}')" class="text-xs font-bold text-rose-500 hover:text-rose-400 uppercase tracking-wider px-3 py-2 border border-rose-900/30 rounded hover:bg-rose-900/20 transition">
                         Delete
                     </button>` : ''}
+                    </div>
                 </div>
             </div>
         `;
@@ -1047,4 +1062,16 @@ window.copyToClipboard = function (text) {
         console.error('Failed to copy: ', err);
         showToast("Error Copying Phone");
     });
+};
+
+// --- LOG TALK HELPER ---
+window.logTalk = async function (id) {
+    try {
+        const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'candidates', id);
+        await updateDoc(docRef, { lastTalked: serverTimestamp() });
+        showToast("Talk Logged");
+    } catch (e) {
+        console.error("Error logging talk:", e);
+        showToast("Error logging talk");
+    }
 };
