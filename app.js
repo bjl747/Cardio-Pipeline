@@ -83,6 +83,10 @@ function loadMyCandidates() {
         });
         performAutoRollover();
         renderList();
+    }, (error) => {
+        console.error("Snapshot Error:", error);
+        document.getElementById('candidateList').innerHTML = '<div class="text-red-500 text-center py-10">Connection Error. Please Logout and Retry.</div>';
+        showToast("Error loading candidates");
     });
 }
 
@@ -412,13 +416,21 @@ function renderList() {
                             </select>
                             
                             <div id="placement-fields-${c.id}" class="${c.status === 'Placed' ? '' : 'hidden'} mt-3 space-y-3 border-t border-slate-700 pt-3">
-                                <div>
+                                <div class="relative">
                                     <label class="block text-[10px] text-slate-500 mb-1">Start Date</label>
-                                    <input type="date" value="${c.contractStart || ''}" class="w-full bg-slate-800 border border-slate-600 text-slate-200 text-xs p-1.5 rounded [color-scheme:dark]">
+                                    <div class="flex items-center gap-2">
+                                        <input type="text" placeholder="MM/DD" value="${c.contractStart ? new Date(c.contractStart + 'T12:00:00').toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : ''}" onchange="window.handleStartInput('${c.id}', this.value)" class="w-full bg-slate-800 border border-slate-600 text-slate-200 text-xs p-1.5 rounded [color-scheme:dark]">
+                                        <button class="text-slate-400 hover:text-white" onclick="document.getElementById('picker-start-${c.id}').showPicker()">📅</button>
+                                        <input type="date" id="picker-start-${c.id}" class="sr-only" onchange="window.handleStartInput('${c.id}', this.value)">
+                                    </div>
                                 </div>
-                                <div>
+                                <div class="relative">
                                     <label class="block text-[10px] text-emerald-500 font-bold mb-1">End Date (Auto-Updates Avail)</label>
-                                    <input type="date" value="${c.contractEnd || ''}" onchange="window.handlePlacementDates('${c.id}', this.value)" class="w-full bg-slate-800 border border-emerald-900/50 text-emerald-400 text-xs p-1.5 rounded [color-scheme:dark]">
+                                    <div class="flex items-center gap-2">
+                                        <input type="text" placeholder="MM/DD" value="${c.contractEnd ? new Date(c.contractEnd + 'T12:00:00').toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : ''}" onchange="window.handleEndInput('${c.id}', this.value)" class="w-full bg-slate-800 border border-emerald-900/50 text-emerald-400 text-xs p-1.5 rounded [color-scheme:dark]">
+                                        <button class="text-emerald-500 hover:text-emerald-300" onclick="document.getElementById('picker-end-${c.id}').showPicker()">📅</button>
+                                        <input type="date" id="picker-end-${c.id}" class="sr-only" onchange="window.handleEndInput('${c.id}', this.value)">
+                                    </div>
                                 </div>
                                 
                                 <div class="flex items-center justify-between bg-slate-800/50 p-2 rounded border border-slate-700">
@@ -441,6 +453,12 @@ function renderList() {
                             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Active Licenses</p>
                             <div class="flex flex-wrap gap-1.5">
                                 ${(c.licenses || 'N/A').split(',').map(l => `<span class="bg-rose-950/30 text-rose-400 text-[10px] px-2 py-0.5 rounded border border-rose-900/30">${l.trim()}</span>`).join('')}
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Certifications</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                ${(c.certs || 'N/A').split(',').map(ce => `<span class="bg-indigo-950/30 text-indigo-400 text-[10px] px-2 py-0.5 rounded border border-indigo-900/30">${ce.trim()}</span>`).join('')}
                             </div>
                         </div>
                         <div>
@@ -525,23 +543,88 @@ window.toggleExtension = async function (id) {
     } catch (e) { console.error(e); }
 };
 
-window.handlePlacementDates = async function (id, endDateString) {
-    if (!endDateString) return;
-    try {
-        const safeDate = new Date(endDateString + 'T12:00:00');
-        const safeDay = safeDate.getDay();
-        const daysToAdd = (1 + 7 - safeDay) % 7 || 7;
-        const nextMonday = new Date(safeDate);
-        nextMonday.setDate(safeDate.getDate() + daysToAdd);
-        const newAvail = nextMonday.toISOString().split('T')[0];
+// --- SMART DATE LOGIC ---
+function parseSmartDate(input) {
+    if (!input) return null;
+    // If already YYYY-MM-DD (from picker)
+    if (input.match(/^\d{4}-\d{2}-\d{2}$/)) return input;
 
+    // Handle MM/DD or M/D
+    const parts = input.split('/');
+    if (parts.length >= 2) {
+        const month = parseInt(parts[0]) - 1; // 0-11
+        const day = parseInt(parts[1]);
+        const today = new Date();
+        const year = today.getFullYear();
+
+        let date = new Date(year, month, day);
+
+        // If date is in the past (more than a few days aka user meant next year), add year
+        // Threshold: if input is Jan and today is Dec, clearly next year. 
+        // Simple rule: if date < today - 7 days, assume next year.
+        if (date < new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000)) {
+            date.setFullYear(year + 1);
+        }
+
+        // Return ISO
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    }
+    return null;
+}
+
+window.handleStartInput = async function (id, value) {
+    const isoDate = parseSmartDate(value);
+    if (!isoDate) return;
+
+    // 1. Calculate End Date (13 Weeks - 2 Days = Saturday)
+    // 13 * 7 = 91 days. -2 = 89 days? 
+    // Wait, 13 weeks from Monday is Monday. Saturday is 2 days prior. Yes.
+    const startDate = new Date(isoDate + 'T12:00:00');
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + (13 * 7) - 2);
+    const isoEnd = endDate.toISOString().split('T')[0];
+
+    // 2. Calculate Avail (Next Monday after End)
+    const nextMonday = new Date(endDate);
+    const day = nextMonday.getDay();
+    const daysToAdd = (1 + 7 - day) % 7 || 7;
+    nextMonday.setDate(nextMonday.getDate() + daysToAdd);
+    const isoAvail = nextMonday.toISOString().split('T')[0];
+
+    try {
         const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'candidates', id);
         await updateDoc(docRef, {
-            contractEnd: endDateString,
-            availDate: newAvail
+            contractStart: isoDate,
+            contractEnd: isoEnd,
+            availDate: isoAvail
         });
-        showToast(`Placed! Avail updated to Mon, ${newAvail}`);
-    } catch (e) { console.error(e); showToast("Error updating dates"); }
+        showToast("Contract Started! End Date Auto-Calculated.");
+    } catch (e) { console.error(e); showToast("Error saving dates"); }
+};
+
+window.handleEndInput = async function (id, value) {
+    const isoDate = parseSmartDate(value);
+    if (!isoDate) return;
+
+    // Calc Avail
+    const endDate = new Date(isoDate + 'T12:00:00');
+    const nextMonday = new Date(endDate);
+    const day = nextMonday.getDay();
+    const daysToAdd = (1 + 7 - day) % 7 || 7;
+    nextMonday.setDate(nextMonday.getDate() + daysToAdd);
+    const isoAvail = nextMonday.toISOString().split('T')[0];
+
+    try {
+        const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'candidates', id);
+        await updateDoc(docRef, {
+            contractEnd: isoDate, // START DATE NOT TOUCHED
+            availDate: isoAvail
+        });
+        showToast("End Date Updated");
+    } catch (e) { console.error(e); showToast("Error saving end date"); }
 };
 
 window.editCandidate = function (id) {
@@ -578,6 +661,17 @@ window.editCandidate = function (id) {
     }
     document.getElementById('modalTitle').innerText = "EDIT CANDIDATE";
     document.getElementById('submitBtn').innerText = "Update Candidate";
+
+    // Reset Certs first
+    document.querySelectorAll('#certsContainer input').forEach(cb => cb.checked = false);
+    if (c.certs) {
+        const certList = c.certs.split(',').map(ce => ce.trim());
+        certList.forEach(ce => {
+            const cb = document.querySelector(`#certsContainer input[value="${ce}"]`);
+            if (cb) cb.checked = true;
+        });
+    }
+
     document.getElementById('modalOverlay').classList.remove('hidden');
 }
 
@@ -613,6 +707,12 @@ function setupModal() {
             document.getElementById('submitBtn').innerText = "Initiate Candidate";
             document.querySelectorAll('#map-container path.selected').forEach(p => p.classList.remove('selected'));
             document.querySelectorAll('#unitsContainer input').forEach(cb => cb.checked = false);
+
+            // Certs Default (BLS = true)
+            document.querySelectorAll('#certsContainer input').forEach(cb => {
+                cb.checked = (cb.value === 'BLS');
+            });
+
             if (!document.getElementById('availDate').value) {
                 document.getElementById('availDate').valueAsDate = new Date();
             }
@@ -625,6 +725,8 @@ function setupModal() {
         submitBtn.onclick = async () => {
             if (!form.checkValidity()) { form.reportValidity(); return; }
             const selectedUnits = Array.from(document.querySelectorAll('#unitsContainer input:checked')).map(cb => cb.value).join(', ');
+            const selectedCerts = Array.from(document.querySelectorAll('#certsContainer input:checked')).map(cb => cb.value).join(', ');
+
             const formValues = {
                 fullName: document.getElementById('fullName').value,
                 credential: document.getElementById('credential').value,
@@ -634,6 +736,8 @@ function setupModal() {
                 pay: document.getElementById('payReq').value,
                 shift: document.getElementById('shiftPref').value,
                 units: selectedUnits,
+                certs: selectedCerts,
+                states: document.getElementById('statesInterested').value,
                 states: document.getElementById('statesInterested').value,
                 licenses: document.getElementById('licenses').value,
                 notes: document.getElementById('notes').value,
@@ -704,6 +808,7 @@ function setupModal() {
                                 email: formValues.email,
                                 phone: formValues.phone,
                                 credential: formValues.credential,
+                                certs: formValues.certs,
                                 notes: formValues.notes,
                                 targetEmail: targetEmail,
                                 ownerName: newDoc.ownerName
