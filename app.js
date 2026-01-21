@@ -128,9 +128,9 @@ async function fetchUserMap() {
         const q = query(collection(db, 'artifacts', appId, 'users'));
         const snap = await getDocs(q);
         snap.forEach(doc => {
-            const data = doc.data();
-            let name = data.displayName || data.email.split('@')[0];
-            if (data.email === 'ben.layher@gmail.com') name = "BJ Layher"; // Override
+            const email = data.email || "";
+            let name = data.displayName || (email ? email.split('@')[0] : "Unknown User");
+            if (email === 'ben.layher@gmail.com') name = "BJ Layher"; // Override
             userMap[doc.id] = name;
         });
         console.log("User Map Built:", Object.keys(userMap).length);
