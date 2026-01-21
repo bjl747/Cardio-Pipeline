@@ -1075,3 +1075,59 @@ window.logTalk = async function (id) {
         showToast("Error logging talk");
     }
 };
+
+// --- GEO HELPERS ---
+const regionMap = {
+    'Northeast': ['ME', 'NH', 'VT', 'MA', 'RI', 'CT', 'NY', 'PA', 'NJ', 'DE', 'MD', 'DC'],
+    'Southeast': ['VA', 'WV', 'KY', 'TN', 'NC', 'SC', 'GA', 'FL', 'AL', 'MS', 'AR', 'LA'],
+    'Midwest': ['OH', 'IN', 'IL', 'MI', 'WI', 'MN', 'IA', 'MO', 'ND', 'SD', 'NE', 'KS'],
+    'South Central': ['TX', 'OK'],
+    'Northwest': ['WA', 'OR', 'ID', 'MT', 'WY', 'AK'],
+    'Southwest': ['CA', 'NV', 'UT', 'CO', 'AZ', 'NM', 'HI'],
+    'East': ['ME', 'NH', 'VT', 'MA', 'RI', 'CT', 'NY', 'PA', 'NJ', 'DE', 'MD', 'DC', 'VA', 'WV', 'KY', 'TN', 'NC', 'SC', 'GA', 'FL', 'AL', 'MS', 'AR', 'LA'],
+    'West': ['WA', 'OR', 'ID', 'MT', 'WY', 'AK', 'CA', 'NV', 'UT', 'CO', 'AZ', 'NM', 'HI']
+};
+
+window.toggleOpenGeo = function (isChecked) {
+    const input = document.getElementById('statesInterested');
+    const container = document.getElementById('map-container');
+
+    if (isChecked) {
+        // Clear Map selections
+        container.querySelectorAll('path.selected').forEach(el => el.classList.remove('selected'));
+        // Set Value
+        input.value = "OPEN";
+        // Visual Feedback (Fade map)
+        container.classList.add('opacity-50', 'pointer-events-none');
+    } else {
+        input.value = "";
+        container.classList.remove('opacity-50', 'pointer-events-none');
+    }
+};
+
+window.selectRegion = function (region) {
+    // Uncheck Open Geo if active
+    const openCheck = document.getElementById('openGeoToggle');
+    if (openCheck && openCheck.checked) {
+        openCheck.click(); // Trigger click to reset state safely
+    }
+
+    const states = regionMap[region];
+    if (!states) return;
+
+    const container = document.getElementById('map-container');
+    const input = document.getElementById('statesInterested');
+
+    // Select these states on map
+    states.forEach(code => {
+        const path = container.querySelector(`path[id="US-${code}"]`);
+        if (path) path.classList.add('selected');
+    });
+
+    // Update Input
+    // Get all currently selected
+    const currentlySelected = Array.from(container.querySelectorAll('path.selected'))
+        .map(el => el.id.replace('US-', ''));
+
+    input.value = currentlySelected.join(', ');
+};
