@@ -96,7 +96,7 @@ function loadTeamCandidates() {
         const rawList = snapshot.docs.map(doc => {
             // Must capture parent ID as ownerId if not stored
             const data = doc.data();
-            const ownerId = data.ownerId || doc.ref.parent.parent.id;
+            const ownerId = data.ownerId || (doc.ref.parent.parent ? doc.ref.parent.parent.id : 'unknown');
             return { id: doc.id, ...data, ownerId: ownerId };
         });
 
@@ -332,7 +332,6 @@ function renderList() {
                     <div class="flex flex-col gap-1">
                         <div class="flex items-center gap-3">
                             <h3 class="font-bold text-xl text-slate-100 group-hover:text-white transition tracking-wide">${c.fullName}</h3>
-                            ${pipelineBar}
                             ${pipelineBar}
                             ${resumeBadgeHtml}
                             ${(c.ownerId && c.ownerId !== currentUser.uid) ? '<span class="text-[10px] text-slate-500 bg-slate-900 border border-slate-700 px-1 rounded">Shared</span>' : ''}
