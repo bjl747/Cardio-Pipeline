@@ -1,7 +1,7 @@
 // --- FIREBASE SETUP ---
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, onSnapshot, updateDoc, deleteDoc, doc, query, getDoc, collectionGroup, where, orderBy } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, onSnapshot, updateDoc, deleteDoc, doc, query, getDoc, getDocs, collectionGroup, where, orderBy } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBUfky5nGOCIxFDjCr6vbEqH0SlDygwYkc",
@@ -20,6 +20,7 @@ const appId = 'default-app-id';
 let currentUser = null;
 // let currentUser = null; // Removed duplicate
 let candidates = [];
+let userMap = {}; // Map uid -> Display Name
 let editingId = null;
 let currentView = 'mine'; // 'mine' or 'team'
 let unsubscribeCandidates = null; // To handle switching listeners
@@ -41,10 +42,16 @@ onAuthStateChanged(auth, (user) => {
         overlay.classList.add('hidden');
         logoutBtn.classList.remove('hidden');
 
-        const shortName = user.displayName || user.email.split('@')[0];
+        const shortName = (user.email === 'ben.layher@gmail.com' ? 'BJ Layher' : (user.displayName || user.email.split('@')[0]));
+
+        // Force update current user display name for local logic
+        if (user.email === 'ben.layher@gmail.com') user.displayName = "BJ Layher";
+
         if (headerTitle) {
             headerTitle.innerHTML = `HOT LIST <span class="text-xs align-middle bg-slate-800 text-rose-400 px-2 py-1 rounded border border-rose-900/50 ml-2">${shortName.toUpperCase()}</span>`;
         }
+
+        fetchUserMap(); // Load all user names for the list
 
         console.log("Loading data for:", user.uid);
         loadMyCandidates(); // Default to my view
@@ -113,6 +120,22 @@ function loadTeamCandidates() {
         console.error("Team Query Error:", error);
         showToast("Error loading team data. Valid Indexes?");
     });
+}
+
+// Fetch all users to build a Name Map
+async function fetchUserMap() {
+    try {
+        const q = query(collection(db, 'artifacts', appId, 'users'));
+        const snap = await getDocs(q);
+        snap.forEach(doc => {
+            const data = doc.data();
+            let name = data.displayName || data.email.split('@')[0];
+            if (data.email === 'ben.layher@gmail.com') name = "BJ Layher"; // Override
+            userMap[doc.id] = name;
+        });
+        console.log("User Map Built:", Object.keys(userMap).length);
+        renderList(); // Re-render to show names
+    } catch (e) { console.error("Error fetching user map:", e); }
 }
 
 window.switchTab = function (view) {
@@ -334,7 +357,7 @@ function renderList() {
                             <h3 class="font-bold text-xl text-slate-100 group-hover:text-white transition tracking-wide">${c.fullName}</h3>
                             ${pipelineBar}
                             ${resumeBadgeHtml}
-                            ${(c.ownerId && c.ownerId !== currentUser.uid) ? '<span class="text-[10px] text-slate-500 bg-slate-900 border border-slate-700 px-1 rounded">Shared</span>' : ''}
+                            ${(c.ownerId && c.ownerId !== currentUser.uid) ? `<span class="text-[10px] text-slate-500 bg-slate-900 border border-slate-700 px-2 py-0.5 rounded font-medium">${userMap[c.ownerId] || c.ownerName || 'Unknown Recruiter'}</span>` : ''}
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="text-[10px] font-bold text-slate-900 bg-slate-400 px-1.5 py-0.5 rounded uppercase">${c.credential}</span>
@@ -424,7 +447,7 @@ function renderList() {
                     <button onclick="window.editCandidate('${c.id}')" class="text-xs font-bold text-slate-400 hover:text-white uppercase tracking-wider px-3 py-2 border border-slate-700 rounded hover:bg-slate-800 transition">
                         ${(c.ownerId && c.ownerId !== currentUser.uid) ? 'Edit (Shared)' : 'Edit Details'}
                     </button>
-                    ${(!c.ownerId || c.ownerId === currentUser.uid) ? `
+                    ${(!c.ownerId || c.ownerId === currentUser.uid || currentUser.email === 'ben.layher@gmail.com') ? `
                     <button onclick="window.deleteCandidate('${c.id}')" class="text-xs font-bold text-rose-500 hover:text-rose-400 uppercase tracking-wider px-3 py-2 border border-rose-900/30 rounded hover:bg-rose-900/20 transition">
                         Delete
                     </button>` : ''}
