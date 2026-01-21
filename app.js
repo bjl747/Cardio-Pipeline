@@ -347,19 +347,19 @@ function renderList() {
     candidates.forEach(c => {
         const glowClass = getTrafficLightGlow(c.availDate);
         let dateBadgeClass = "";
-        if (glowClass === 'glow-green') dateBadgeClass = "text-emerald-400 border-emerald-500/50 bg-emerald-500/10";
-        if (glowClass === 'glow-yellow') dateBadgeClass = "text-amber-400 border-amber-500/50 bg-amber-500/10";
         if (glowClass === 'glow-red') dateBadgeClass = "text-red-400 border-red-500/50 bg-red-500/10";
+        if (glowClass === 'glow-yellow') dateBadgeClass = "text-amber-400 border-amber-500/50 bg-amber-500/10";
+        if (glowClass === 'glow-blue') dateBadgeClass = "text-sky-400 border-sky-500/50 bg-sky-500/10";
 
         const dateDisplay = new Date(new Date(c.availDate).valueOf() + new Date().getTimezoneOffset() * 60000).toLocaleDateString('en-US');
         const displayStatus = c.contractStatus || "Available";
         const pipelineBar = getPipelineBar(c.status);
         const showExtBadge = c.status === 'Placed' && c.extensionInterest;
 
-        const isGreen = glowClass === 'glow-green';
+        const isRed = glowClass === 'glow-red';
         const isPlaced = c.status === 'Placed';
         let resumeBadgeHtml = '';
-        if (isPlaced && isGreen) {
+        if (isPlaced && isRed) {
             if (c.resumeUpdated) {
                 resumeBadgeHtml = `<span class="resume-updated ml-2" onclick="window.toggleResumeStatus('${c.id}', event)">RESUME UPDATED</span>`;
             } else {
@@ -848,9 +848,9 @@ function getTrafficLightGlow(dateString) {
     const targetDate = new Date(dateString);
     const diffTime = targetDate - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    if (diffDays <= 45) return 'glow-green';
+    if (diffDays <= 45) return 'glow-red';
     if (diffDays <= 90) return 'glow-yellow';
-    return 'glow-red';
+    return 'glow-blue';
 }
 
 function setupMapInteractions() {
