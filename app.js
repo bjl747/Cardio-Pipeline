@@ -660,6 +660,10 @@ function setupModal() {
                     // If shared, the path is users/{ownerId}/candidates/{docId}
                     const targetOwnerId = (existingC && existingC.ownerId) ? existingC.ownerId : currentUser.uid;
 
+                    console.log(`[SAVE DEBUG] Editing ID: ${editingId}`);
+                    console.log(`[SAVE DEBUG] Target Owner: ${targetOwnerId}`);
+                    console.log(`[SAVE DEBUG] Form Values: `, formValues);
+
                     const docRef = doc(db, 'artifacts', appId, 'users', targetOwnerId, 'candidates', editingId);
                     await updateDoc(docRef, formValues);
                     showToast("Candidate Updated");
