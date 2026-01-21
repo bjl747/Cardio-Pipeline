@@ -1,7 +1,7 @@
 // --- FIREBASE SETUP ---
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, onSnapshot, updateDoc, deleteDoc, doc, query } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, onSnapshot, updateDoc, deleteDoc, doc, query, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBUfky5nGOCIxFDjCr6vbEqH0SlDygwYkc",
@@ -603,6 +603,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.onclick = async () => {
             const originalText = btn.innerHTML;
 
+            // 1. Filter the Hot List
             const today = new Date();
             const hotList = candidates.filter(c => {
                 const targetDate = new Date(c.availDate);
@@ -627,25 +628,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
             btn.innerHTML = `<span class="animate-pulse">Sending...</span>`;
 
-            const listWebhookUrl = "https://hook.us2.make.com/4alhbwlqbiyo9sl3ekv9wbxjap1sr7fi";
-
+            // 2. Determine Target Email
+            let targetEmail = currentUser.email; // Default fallback
             try {
+                // Fetch User Profile to check for override
+                const userDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid);
+                const userSnap = await getDoc(userDocRef);
+
+                if (userSnap.exists() && userSnap.data().officialEmail) {
+                    targetEmail = userSnap.data().officialEmail;
+                    console.log("Using Official Email Override:", targetEmail);
+                } else {
+                    console.log("Using Login Email (No Override Found):", targetEmail);
+                }
+
+                // 3. Send Webhook
+                const listWebhookUrl = "https://hook.us2.make.com/4alhbwlqbiyo9sl3ekv9wbxjap1sr7fi";
+
                 const response = await fetch(listWebhookUrl, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        candidateList: JSON.stringify(hotList)
+                        candidateList: JSON.stringify(hotList),
+                        targetEmail: targetEmail
                     })
                 });
 
                 if (response.ok) {
-                    showToast(`Sent ${hotList.length} candidates!`);
+                    showToast(`List sent to ${targetEmail}`);
                 } else {
                     showToast("Error sending list.");
                 }
             } catch (e) {
-                console.error(e);
-                showToast("Network Error.");
+                console.error("Email Fetch Error:", e);
+                showToast("Network Error or Profile Fetch Failed.");
             } finally {
                 setTimeout(() => btn.innerHTML = originalText, 2000);
             }
