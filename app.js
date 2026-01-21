@@ -629,22 +629,30 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.innerHTML = `<span class="animate-pulse">Sending...</span>`;
 
             // 2. Determine Target Email
-            let targetEmail = currentUser.email; // Default fallback
-            try {
-                // Fetch User Profile to check for override
-                const userDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid);
-                const userSnap = await getDoc(userDocRef);
+            let targetEmail = currentUser && currentUser.email ? currentUser.email : "unknown@example.com";
 
-                if (userSnap.exists() && userSnap.data().officialEmail) {
-                    targetEmail = userSnap.data().officialEmail;
-                    console.log("Using Official Email Override:", targetEmail);
-                } else {
-                    console.log("Using Login Email (No Override Found):", targetEmail);
+            // Attempt to fetch override (fail gracefully)
+            if (currentUser) {
+                try {
+                    const userDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid);
+                    const userSnap = await getDoc(userDocRef);
+
+                    if (userSnap.exists() && userSnap.data().officialEmail) {
+                        targetEmail = userSnap.data().officialEmail;
+                        console.log("Using Official Email Override:", targetEmail);
+                    } else {
+                        console.log("Using Login Email (No Override Found):", targetEmail);
+                    }
+                } catch (profileErr) {
+                    console.warn("Profile fetch failed, defaulting to login email:", profileErr);
+                    // Do not stop! Proceed with default email.
                 }
+            }
 
-                // 3. Send Webhook
-                const listWebhookUrl = "https://hook.us2.make.com/4alhbwlqbiyo9sl3ekv9wbxjap1sr7fi";
+            // 3. Send Webhook
+            const listWebhookUrl = "https://hook.us2.make.com/4alhbwlqbiyo9sl3ekv9wbxjap1sr7fi";
 
+            try {
                 const response = await fetch(listWebhookUrl, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -657,11 +665,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.ok) {
                     showToast(`List sent to ${targetEmail}`);
                 } else {
-                    showToast("Error sending list.");
+                    showToast("Error sending list (Webhook Failed).");
                 }
             } catch (e) {
-                console.error("Email Fetch Error:", e);
-                showToast("Network Error or Profile Fetch Failed.");
+                console.error("Webhook Error:", e);
+                showToast("Network Error: Could not reach automation.");
             } finally {
                 setTimeout(() => btn.innerHTML = originalText, 2000);
             }
