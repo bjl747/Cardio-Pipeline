@@ -1,0 +1,881 @@
+﻿Regulatory Frameworks and Workforce Mobility: A Comprehensive Analysis of Respiratory Therapist Licensure in the United States
+Executive Overview: The State of Respiratory Care Regulation
+The regulation of Respiratory Therapists (RTs) in the United States represents a complex mosaic of state-sovereign mandates, varying significantly in administrative structure, financial burden, and technological sophistication. As the healthcare sector faces increasing pressure to facilitate workforce mobility—driven by the post-pandemic realization of critical staffing shortages—the mechanisms by which states license, verify, and renew RT credentials have come under intense scrutiny. This report provides an exhaustive, state-by-state analysis of these regulatory environments, specifically tailored to address the logistical and financial realities for practitioners seeking licensure by endorsement.
+The following analysis is predicated on the understanding that while the National Board for Respiratory Care (NBRC) establishes the baseline clinical competency through the Certified Respiratory Therapist (CRT) and Registered Respiratory Therapist (RRT) credentials, the legal authority to practice is exclusively the domain of state boards. These boards range from independent, profession-specific bodies to sub-committees within broader medical or nursing boards. This divergence impacts everything from the speed of licensure verification to the granularity of public protection protocols.
+A critical component of this research focuses on the verification ecosystem. The historic reliance on static lists—typified by the user's observation regarding Wyoming’s spreadsheet-based verification—is rapidly obsolescing. Our deep-dive research confirms a broad migration toward SaaS-based licensure management systems (e.g., ImageTrend, MiPLUS, BreEZe), which offer real-time primary source verification (PSV). This shift is not merely administrative; it fundamentally alters the risk profile for employers and the portability landscape for traveling therapists.
+Furthermore, the financial analysis reveals a stark disparity in the "cost of practice" across state lines. Fee structures are rarely static; they reflect the legislative priorities of the jurisdiction. For instance, Arkansas has recently enacted aggressive fee-reduction legislation to attract healthcare workers, contrasting sharply with states like California and Nevada, where high fees fund rigorous enforcement and consumer protection apparatuses.
+This report is structured to provide a narrative analysis of each jurisdiction, integrating the specific data points requested: regulatory authority, verification accessibility, financial requirements for endorsement and renewal, and the status of temporary practice permits.
+________________
+National Regulatory Landscape and Workforce Implications
+The Verification Paradigm Shift
+The transition from analog or static digital lists to dynamic, searchable databases is a defining trend in allied health regulation. State boards are increasingly adopting integrated platforms that allow for "self-service" verification. This reduces the administrative burden on board staff and allows credentialing specialists to instantly validate a practitioner's standing. However, as noted in the state-specific sections below, the user interface and data depth of these portals vary. Some provide granular detail including disciplinary history and scope of practice limitations, while others offer only basic active/inactive status. The persistence of older systems in a minority of states continues to act as a friction point for rapid deployment of RT staff during public health emergencies.
+The Economics of Licensure by Endorsement
+For a Respiratory Therapist licensed in one jurisdiction seeking to practice in another, "Licensure by Endorsement" (reciprocity) is the standard pathway. Unlike initial licensure, which requires proof of examination scores directly from the NBRC, endorsement focuses on the validity of the existing license and the absence of disciplinary history. The costs associated with this process are often higher than initial licensure due to the administrative overhead of verifying out-of-state credentials. Renewal fees, typically assessed biennially, represent a recurring operational cost for practitioners. Our analysis highlights that while some states view licensure fees as a simple revenue stream for board operations, others utilize them as a lever for policy, lowering them to incentivize workforce growth.
+The Temporary Licensure Debate
+The availability of temporary or "graduate" licenses remains a contentious policy area. Proponents argue that allowing new graduates to practice under supervision (pending their NBRC exams) is essential for maintaining the workforce pipeline and allowing students to earn income immediately. Detractors, often aligned with strict patient safety advocacy, argue that no individual should provide respiratory care without demonstrated competency via the national board exam. This philosophical split is evident in the data: roughly half of the states offer some form of temporary permit, while the other half have moved to a strict "exam-first" model.
+________________
+State-by-State Licensure Analysis
+Alabama
+Regulatory Authority: Alabama State Board of Respiratory Therapy (ASBRT).
+The regulatory environment in Alabama is characterized by a streamlined, profession-specific board that emphasizes accessibility for new graduates. The ASBRT has maintained a consistent temporary licensure pathway, acknowledging the need for immediate workforce integration post-graduation. The board’s verification system has modernized, moving away from manual lookups to a direct digital portal.
+Licensure Dynamics: Alabama’s approach to endorsement is standard, requiring verification from the applicant’s original state of licensure. The fee structure is moderate compared to the national average, reflecting a balance between administrative sustainability and workforce accessibility. The availability of a temporary license is a critical feature for the state's teaching hospitals, allowing them to recruit students prior to graduation. The temporary license is valid for six months and renewable once, creating a one-year window for the practitioner to pass the NBRC exams.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://www.asbrt.alabama.gov/applicants/verify-license/)
+	Initial Endorsement Cost
+	$100.00 (Application Fee) 1
+	Renewal Cost
+	$75.00 (Biennial) 2
+	Temporary License
+	Yes (6 months, renewable once) 1
+	Alaska
+Regulatory Authority: None (Deregulation).
+Alaska occupies a unique position in the United States regulatory landscape as the only jurisdiction that does not mandate state licensure for Respiratory Therapists. This deregulated status shifts the burden of credentialing entirely to the employer. Hospitals and clinics in Alaska must independently verify an applicant's education (CoARC accreditation) and national credentials (NBRC status).
+Licensure Dynamics: The absence of a state board means there is no "license" to verify, no state fees to pay, and no state-sanctioned temporary permit. While this eliminates bureaucratic hurdles and costs for the practitioner, it imposes a higher due diligence requirement on healthcare facilities to ensure patient safety. Traveling therapists need only maintain their national RRT/CRT credential to work in the state.3
+Feature
+	Detail
+	Verification Link
+	N/A (No State License)
+	Initial Endorsement Cost
+	$0.00
+	Renewal Cost
+	$0.00
+	Temporary License
+	N/A
+	Arizona
+Regulatory Authority: Arizona State Board of Respiratory Care Examiners.
+Arizona maintains a rigorous, independent board structure. The state is notable for its relatively high initial application fees, which are among the highest in the western United States. This high cost is partly due to the board's aggressive enforcement of continuing education and ethical standards.
+Licensure Dynamics: Arizona does not offer a temporary license, adhering to a strict "competency-first" model. Applicants must fully qualify for licensure before they can practice. The verification system is robust, providing detailed status reports. The renewal cycle is biennial, and the board is strict regarding the submission of continuing education proof upon audit.1
+
+
+Feature
+	Detail
+	Verification Link
+	Arizona License Verification
+	Initial Endorsement Cost
+	$273.00 1
+	Renewal Cost
+	$153.00 (Biennial) 5
+	Temporary License
+	No 1
+	Arkansas
+Regulatory Authority: Arkansas State Medical Board.
+Arkansas is currently undergoing a significant regulatory shift aimed at workforce expansion. Under Act 114 of 2023, the state has implemented a dramatic reduction in licensure fees for allied health professionals, including Respiratory Therapists. This legislative move is designed to lower barriers to entry and attract practitioners to the state.
+Licensure Dynamics: Historically, fees were standard ($75 initial / $40 renewal), but the current fee schedule reflects nominal charges to cover basic processing, effectively subsidizing the licensure process. This makes Arkansas one of the most financially accessible states for endorsement. The state also retains a temporary licensure pathway, further supporting workforce entry.6
+
+
+Feature
+	Detail
+	Verification Link
+	(https://www.armedicalboard.org/Public.aspx)
+	Initial Endorsement Cost
+	$4.00 (Plus ~$36.25 background check) 6
+	Renewal Cost
+	$2.00 (Annual) 6
+	Temporary License
+	Yes (Fee: ~$2.00) 1
+	California
+Regulatory Authority: Respiratory Care Board of California (Department of Consumer Affairs).
+California represents the apex of regulatory rigor in the United States. The Respiratory Care Board (RCB) is known for its stringent background checks and high fees, which fund a proactive enforcement division. California was also a pioneer in mandating the Registered Respiratory Therapist (RRT) credential for all new applicants, setting a higher competency bar than many other states.
+Licensure Dynamics: The state utilizes the "BreEZe" online system, one of the most comprehensive licensure databases in the country. Endorsement candidates must meet specific educational requirements that sometimes exceed CoARC baselines (e.g., specific coursework in law and ethics). California does not issue a standard temporary license for unsupervised practice, reflecting its conservative approach to patient safety.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://search.dca.ca.gov/)
+	Initial Endorsement Cost
+	$300.00 1
+	Renewal Cost
+	$300.00 (Biennial) 2
+	Temporary License
+	No (Strict restrictions apply) 1
+	Colorado
+Regulatory Authority: Colorado Department of Regulatory Agencies (DORA).
+In Colorado, regulation is managed under a "Director Model" within the umbrella agency DORA, rather than by an independent board of practitioners. This centralization often leads to more standardized administrative processes but can result in less profession-specific nuance in policy making.
+Licensure Dynamics: DORA’s verification system is efficient and widely used. The fee structure in Colorado is somewhat variable, as DORA adjusts fees annually based on the program's fiscal needs (a "cash-fund" model). Consequently, fees can fluctuate significantly from year to year. The state does not offer temporary licensure, requiring full credentialing prior to practice.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://apps.colorado.gov/dora/licensing/Lookup/LicenseLookup.aspx)
+	Initial Endorsement Cost
+	$85.00 (Variable) 1
+	Renewal Cost
+	$24.00 - $76.00 (Variable/Biennial) 2
+	Temporary License
+	No 1
+	Connecticut
+Regulatory Authority: Department of Public Health.
+Connecticut regulates RTs through its public health department, emphasizing public protection. The state maintains an annual renewal cycle, which increases the administrative frequency for practitioners compared to biennial states.
+Licensure Dynamics: The "eLicense" portal serves as the verification hub. Connecticut is welcoming to new graduates, offering a temporary permit valid until the licensure examination is taken. This bridge allows for seamless transition from student to practitioner within the state’s healthcare systems.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://www.elicense.ct.gov/Lookup/LicenseLookup.aspx)
+	Initial Endorsement Cost
+	$190.00 1
+	Renewal Cost
+	$105.00 (Annual) 2
+	Temporary License
+	Yes 1
+	Delaware
+Regulatory Authority: Division of Professional Regulation - Council on Respiratory Care.
+Delaware functions with a Council structure that advises the Division of Professional Regulation. This structure allows for professional input while maintaining centralized administrative control.
+Licensure Dynamics: The state’s verification portal is part of a unified system for all professions. Delaware stands out for its "Student Temporary Permit," which can be issued even before graduation (up to 20 weeks prior), allowing students to secure employment and begin orientation/non-clinical onboarding early. This is a proactive policy to retain graduates from local programs.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://dpronline.delaware.gov/VerifyLicense.aspx)
+	Initial Endorsement Cost
+	$143.00 1
+	Renewal Cost
+	$101.00 (Biennial) 2
+	Temporary License
+	Yes (Student Permit) 1
+	District of Columbia
+Regulatory Authority: DC Health - Board of Respiratory Care.
+Regulation in the nation's capital is overseen by DC Health. The jurisdiction faces unique cross-border workforce issues given its proximity to Maryland and Virginia, necessitating efficient verification processes.
+Licensure Dynamics: DC fees are on the higher end of the spectrum, reflecting the administrative costs of the district. The Board offers temporary licensure to allow practice under direct supervision while full licensure applications are processed, facilitating the movement of staff into DC hospitals.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://doh.force.com/ver/s/)
+	Initial Endorsement Cost
+	$254.00 1
+	Renewal Cost
+	$169.00 (Biennial) 1
+	Temporary License
+	Yes 1
+	Florida
+Regulatory Authority: Florida Board of Respiratory Care.
+Florida’s regulatory environment is massive, overseen by the Medical Quality Assurance (MQA) division. The state has invested heavily in its digital infrastructure, creating one of the most user-friendly verification and application portals in the country.
+Licensure Dynamics: Despite the high volume of practitioners, Florida does not offer a temporary license for RTs, adhering to a strict competency standard. The MQA portal allows for instant verification, crucial for the state's large population of traveling therapists and seasonal workforce. Fees are moderate but subject to legislative adjustments.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://mqa-internet.doh.state.fl.us/MQASearchServices/HealthCareProviders)
+	Initial Endorsement Cost
+	$105.00 1
+	Renewal Cost
+	$95.00 - $120.00 (Biennial) 2
+	Temporary License
+	No 1
+	Georgia
+Regulatory Authority: Georgia Composite Medical Board.
+Georgia regulates RTs through its Composite Medical Board, integrating respiratory care into the broader medical regulatory framework. This often leads to strict oversight regarding scope of practice and physician supervision.
+Licensure Dynamics: The state offers a 12-month non-renewable temporary permit, which is a generous timeline compared to the 6-month standard in other states. This provides ample time for new residents or graduates to complete any outstanding requirements. Verification is handled through the Medical Board’s database.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://gcmb.mylicense.com/verification/)
+	Initial Endorsement Cost
+	$150.00 1
+	Renewal Cost
+	$105.00 (Biennial) 2
+	Temporary License
+	Yes (12 months) 1
+	Hawaii
+Regulatory Authority: Department of Commerce and Consumer Affairs (DCCA).
+Hawaii’s regulatory schedule is distinct, utilizing a triennial (3-year) renewal cycle. This longer interval reduces the frequency of administrative interaction but requires a larger upfront payment for renewal.
+Licensure Dynamics: The cost of initial licensure is high ($340), which can act as a barrier for casual travelers, though the triennial nature amortizes this cost over a longer period. Hawaii does not offer temporary licensure, requiring all practitioners to be fully credentialed before working in the islands.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://pvl.ehawaii.gov/pvlsearch/)
+	Initial Endorsement Cost
+	$340.00 1
+	Renewal Cost
+	$270.00 - $340.00 (Triennial) 2
+	Temporary License
+	No 1
+	Idaho
+Regulatory Authority: Idaho Board of Medicine.
+Idaho manages RT licensure through its Board of Medicine. The state is known for its efficient processing and relatively low barriers to entry, maintaining an annual renewal cycle to keep practitioner data current.
+Licensure Dynamics: Idaho provides a robust temporary licensure pathway (renewable once), allowing up to two years of practice under supervision if necessary. This is particularly useful in rural areas where recruiting fully credentialed staff can be challenging. Verification is accessible via the Board of Medicine’s portal.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://bom.idaho.gov/BOMPortal/Home.aspx)
+	Initial Endorsement Cost
+	$100.00 1
+	Renewal Cost
+	$65.00 (Annual) 2
+	Temporary License
+	Yes 1
+	Illinois
+Regulatory Authority: Illinois Department of Financial and Professional Regulation (IDFPR).
+Illinois utilizes a centralized regulation department (IDFPR) for all professions. The verification system is straightforward, though the department is known for occasional processing delays due to volume.
+Licensure Dynamics: The state allows a 6-month window for practice under a temporary status for applicants who have completed education but not yet passed the exam. This "license pending" status helps bridge the gap between graduation and full certification.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://ileduc.illinois.gov/IDFPR/Lookup/LicenseLookup.aspx)
+	Initial Endorsement Cost
+	$100.00 1
+	Renewal Cost
+	$100.00 - $120.00 (Biennial) 2
+	Temporary License
+	Yes 1
+	Indiana
+Regulatory Authority: Indiana Professional Licensing Agency (Respiratory Care Committee).
+Indiana’s Professional Licensing Agency (IPLA) oversees the Respiratory Care Committee. The state is characterized by very low licensure fees, incentivizing practice within the state.
+Licensure Dynamics: With an initial fee of only $50, Indiana is one of the most affordable states for RTs. The availability of temporary permits for both endorsement applicants and new graduates further enhances workforce mobility. The online verification system is part of the standardized IPLA portal.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://mylicense.in.gov/EVerification/)
+	Initial Endorsement Cost
+	$50.00 10
+	Renewal Cost
+	$50.00 (Biennial) 10
+	Temporary License
+	Yes ($25 fee) 10
+	Iowa
+Regulatory Authority: Iowa Board of Respiratory Care and Polysomnography.
+Iowa combines respiratory care and polysomnography (sleep medicine) under a single board, reflecting the clinical overlap between the two fields.
+Licensure Dynamics: The state does not offer a temporary license, maintaining a strict requirement for full credentials. However, the fee structure is reasonable, and the verification process through the IDPH portal is reliable. The alignment with polysomnography suggests a regulatory environment that values specialized clinical competencies.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://idph.iowa.gov/Licensure/Verify-a-License)
+	Initial Endorsement Cost
+	$75.00 1
+	Renewal Cost
+	$75.00 (Biennial) 5
+	Temporary License
+	No 1
+	Kansas
+Regulatory Authority: Kansas State Board of Healing Arts.
+Kansas regulates RTs under the broader "Healing Arts" umbrella. This typically ensures rigorous oversight and integration with other medical professions.
+Licensure Dynamics: The state allows for a 6-month temporary license, providing flexibility for new entrants. The verification system is maintained by the KSBHA and is comprehensive, offering details on practitioner standing. Fees are moderate and follow an annual renewal schedule.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://www.ksbha.org/verification/verification.shtml)
+	Initial Endorsement Cost
+	$80.00 1
+	Renewal Cost
+	$75.00 (Annual) 5
+	Temporary License
+	Yes 1
+	Kentucky
+Regulatory Authority: Kentucky Board of Respiratory Care.
+Kentucky maintains an independent board dedicated solely to respiratory care. This often results in more focused advocacy and regulation tailored specifically to the profession's needs.
+Licensure Dynamics: The state offers a temporary certificate for up to 6 months, contingent on passing the NBRC exam. Failure of the exam results in the immediate expiration of the permit, highlighting the board’s focus on competency. Fees are higher than the regional average for initial application but standard for renewal.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://kbrc.ky.gov/Pages/Verification.aspx)
+	Initial Endorsement Cost
+	$150.00 1
+	Renewal Cost
+	$90.00 (Annual) 5
+	Temporary License
+	Yes 1
+	Louisiana
+Regulatory Authority: Louisiana State Board of Medical Examiners (LSBME).
+Louisiana regulates RTs through the Medical Examiners board. The state is notable for its specific focus on continuing education and annual renewal cycles.
+Licensure Dynamics: Temporary permits are available for 6 months but are strictly non-renewable if the applicant fails the NBRC exam. This "one-shot" policy for temporary practice places pressure on graduates to succeed immediately. The LSBME verification portal is the primary source for license validation.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://www.lsbme.la.gov/content/verification-licensure)
+	Initial Endorsement Cost
+	$125.00 1
+	Renewal Cost
+	$85.00 (Annual) 1
+	Temporary License
+	Yes 1
+	Maine
+Regulatory Authority: Maine Board of Respiratory Care Practitioners.
+Maine utilizes the ALMS (Agency License Management System) for verification, a common platform in New England states. The board is profession-specific.
+Licensure Dynamics: Maine offers a "Limited Permit" rather than a standard temporary license, requiring an affidavit of supervision. This distinction emphasizes the mentored nature of the practice during this period. Fees are moderate, though initial application costs can vary based on background check requirements.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://www.pfr.maine.gov/almsonline/almsquery/welcome.aspx)
+	Initial Endorsement Cost
+	$135.00 1
+	Renewal Cost
+	$65.00 - $135.00 (Biennial) 1
+	Temporary License
+	Yes 1
+	Maryland
+Regulatory Authority: Maryland Board of Physicians.
+Maryland regulates RTs under the Board of Physicians and faces significant cross-border workforce movement with DC and Virginia.
+Licensure Dynamics: Unlike its neighbor DC, Maryland does not offer a temporary license. This policy decision forces new graduates to be fully credentialed before entering the workforce, potentially delaying start dates but ensuring standardized competency. Initial and renewal fees are relatively high, reflecting the cost of regulation in the region.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://www.mbp.state.md.us/bpqapp/)
+	Initial Endorsement Cost
+	$200.00 1
+	Renewal Cost
+	$176.00 (Biennial) 1
+	Temporary License
+	No 1
+	Massachusetts
+Regulatory Authority: Bureau of Health Professions Licensure.
+Massachusetts maintains a high standard of medical regulation. The Bureau of Health Professions Licensure oversees RTs, ensuring alignment with the state’s robust healthcare sector.
+Licensure Dynamics: The state offers a "Limited License" specifically for students and graduates, valid for one year. This generous timeframe supports the state’s extensive network of teaching hospitals and academic medical centers. Initial fees are among the highest in the country, though renewal costs are more standard.1
+
+
+Feature
+	Detail
+	Verification Link
+	Mass.gov License Check
+	Initial Endorsement Cost
+	$260.00 1
+	Renewal Cost
+	$110.00 (Biennial) 1
+	Temporary License
+	Yes 1
+	Michigan
+Regulatory Authority: Department of Licensing and Regulatory Affairs (LARA).
+Michigan has significantly modernized its regulatory infrastructure with the adoption of the MiPLUS system. This integrated portal handles all aspects of licensure, from application to verification and renewal.
+Licensure Dynamics: Michigan is distinct in its renewal cycle, utilizing a triennial (3-year) system. This requires practitioners to plan for a longer horizon regarding Continuing Education (CE) and fee payment. The availability of temporary licensure supports the workforce pipeline. The MiPLUS system provides real-time verification status.11
+
+
+Feature
+	Detail
+	Verification Link
+	(https://val.lara.state.mi.us/Val/License/Search)
+	Initial Endorsement Cost
+	$95.00 ($75 license + $20 processing) 12
+	Renewal Cost
+	~$162.00 (Triennial) 11
+	Temporary License
+	Yes ($75.00) 12
+	Minnesota
+Regulatory Authority: Minnesota Board of Medical Practice.
+Minnesota regulates RTs through the Board of Medical Practice. The state is known for its high quality of care and correspondingly rigorous regulatory standards.
+Licensure Dynamics: The state charges a relatively high initial application fee ($222), which includes the annual fee and background check processing. However, the renewal fee is moderate. A temporary registration pathway exists, allowing for practice while final credentials are processed. Verification is centralized through the Board's online search tool.14
+
+
+Feature
+	Detail
+	Verification Link
+	(https://mpb.hlb.state.mn.us/#/online-search)
+	Initial Endorsement Cost
+	$222.00 14
+	Renewal Cost
+	$90.00 (Annual) 14
+	Temporary License
+	Yes ($90.00) 15
+	Mississippi
+Regulatory Authority: Mississippi State Department of Health.
+Mississippi operates its licensure through the Department of Health. The state faces chronic healthcare workforce shortages and utilizes its regulatory framework to try and mitigate these gaps.
+Licensure Dynamics: The state offers a temporary permit specifically for students who are graduating within 30 days, allowing them to begin work almost immediately. This "fast-track" approach is critical for local staffing. Fees are kept reasonable to encourage licensure maintenance.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://msdh.ms.gov/msdhsite/_static/30,0,82.html)
+	Initial Endorsement Cost
+	$75.00 1
+	Renewal Cost
+	$100.00 (Biennial) 1
+	Temporary License
+	Yes 1
+	Missouri
+Regulatory Authority: Missouri Board for Respiratory Care.
+Missouri maintains a dedicated board for the profession. The state is notable for having some of the lowest licensure fees in the country, lowering the financial burden on practitioners.
+Licensure Dynamics: With an initial fee of just $40 and renewal at $30, Missouri is extremely accessible financially. The state also offers a temporary permit for $20, further reducing barriers. This low-cost model contrasts sharply with states like California or Nevada.5
+
+
+Feature
+	Detail
+	Verification Link
+	(https://pr.mo.gov/licensee-search-division.asp)
+	Initial Endorsement Cost
+	$40.00 16
+	Renewal Cost
+	$30.00 (Biennial) 16
+	Temporary License
+	Yes ($20.00) 16
+	Montana
+Regulatory Authority: Montana Board of Respiratory Care Practitioners.
+Montana’s regulation focuses on ensuring competency in a largely rural state where practitioners may work with less direct supervision than in urban centers.
+Licensure Dynamics: Montana does not offer a temporary license. This policy requires facilities to hire only fully credentialed therapists, ensuring a baseline of independent competency. Verification is handled through the state's "eBiz" portal.1
+
+
+Feature
+	Detail
+	Verification Link
+	Montana License Lookup
+	Initial Endorsement Cost
+	$100.00 1
+	Renewal Cost
+	$75.00 (Biennial) 1
+	Temporary License
+	No 1
+	Nebraska
+Regulatory Authority: DHHS Division of Public Health.
+Nebraska regulates RTs via the Department of Health and Human Services.
+Licensure Dynamics: The state maintains a "fee-neutral" approach where initial and renewal fees are identical ($118). While some conflicting data exists regarding temporary licensure, the prevailing regulatory statutes suggest that while a mechanism for temporary practice exists for some professions, it is either restricted or not standard for RTs compared to neighboring states. We have classified it as "Yes (Restricted)" based on the broader context of DHHS policies permitting practice during application pendency in specific cases.5
+
+
+Feature
+	Detail
+	Verification Link
+	(https://www.nebraska.gov/LISSearch/search.cgi)
+	Initial Endorsement Cost
+	$118.00 17
+	Renewal Cost
+	$118.00 (Biennial) 17
+	Temporary License
+	Yes (Restricted/Conditional)
+	Nevada
+Regulatory Authority: Nevada State Board of Medical Examiners.
+Nevada has a complex and expensive regulatory structure. It does not have an independent RT board but regulates via the Medical Examiners.
+Licensure Dynamics: Nevada charges an application fee ($100) plus an initial registration fee ($185), plus a background check fee ($75), making it one of the most expensive states for initial entry (~$360 total). The state does not issue temporary RT licenses, requiring full NBRC credentialing and licensure before practice can commence.18
+
+
+Feature
+	Detail
+	Verification Link
+	(https://vs.nv.gov/License/Search)
+	Initial Endorsement Cost
+	~$285.00 (App + Reg) + Background Check 18
+	Renewal Cost
+	$185.00 (Biennial) 18
+	Temporary License
+	No 1
+	New Hampshire
+Regulatory Authority: Office of Professional Licensure and Certification (OPLC).
+New Hampshire consolidates its professional regulation under the OPLC, streamlining administrative functions.
+Licensure Dynamics: The state does not offer a temporary license. Fees are relatively high ($165) for both initial application and renewal, reflecting the cost of the consolidated OPLC operations. Verification is efficient via the shared OPLC portal.1
+
+
+Feature
+	Detail
+	Verification Link
+	NH Online Verification
+	Initial Endorsement Cost
+	$165.00 1
+	Renewal Cost
+	$165.00 (Biennial) 5
+	Temporary License
+	No 1
+	New Jersey
+Regulatory Authority: State Board of Respiratory Care.
+New Jersey maintains a dedicated board within the Division of Consumer Affairs. The state has a high density of practitioners and rigorous standards.
+Licensure Dynamics: Initial licensure is expensive ($285 total), combining application and license fees. A temporary license is available for 6 months but is strictly non-renewable, placing a hard deadline on passing the NBRC exams. Verification is handled through the robust DCA portal.1
+
+
+Feature
+	Detail
+	Verification Link
+	NJ License Verification
+	Initial Endorsement Cost
+	$285.00 1
+	Renewal Cost
+	$160.00 (Biennial) 5
+	Temporary License
+	Yes 1
+	New Mexico
+Regulatory Authority: New Mexico Regulation and Licensing Department.
+New Mexico regulates RTs through a department-level structure.
+Licensure Dynamics: The state does not offer a temporary license, requiring full qualifications for entry. Fees are standardized at $150 for both initial application and renewal. The online verification system provides clear status indicators for employers.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://www.rld.nm.gov/verify-a-license/)
+	Initial Endorsement Cost
+	$150.00 1
+	Renewal Cost
+	$150.00 (Biennial) 5
+	Temporary License
+	No 1
+	New York
+Regulatory Authority: NY State Education Department (NYSED).
+New York places professional regulation under the State Education Department, viewing licensure as a matter of educational credentialing and public trust.
+Licensure Dynamics: New York’s fees are among the highest in the nation ($294 initial). The state uses a triennial (3-year) renewal cycle, similar to Michigan and Hawaii. A "Limited Permit" is available for $70, allowing practice under supervision. The verification website is functional but older in design compared to newer SaaS platforms.20
+
+
+Feature
+	Detail
+	Verification Link
+	(http://www.op.nysed.gov/opsearches.htm)
+	Initial Endorsement Cost
+	$294.00 20
+	Renewal Cost
+	~$237.00 (Triennial) 5
+	Temporary License
+	Yes ($70 Limited Permit) 20
+	North Carolina
+Regulatory Authority: North Carolina Respiratory Care Board (NCRCB).
+The NCRCB is an active, independent board known for its engagement with the professional community.
+Licensure Dynamics: North Carolina charges separate fees for application, license, and background checks, totaling around $213. Renewal is annual, which keeps the board in frequent contact with licensees. A provisional/temporary endorsement is available, facilitating rapid onboarding.22
+
+
+Feature
+	Detail
+	Verification Link
+	(https://portal.ncrcb.org/Verification/Search.aspx)
+	Initial Endorsement Cost
+	~$213.00 (Total) 23
+	Renewal Cost
+	$75.00 (Annual) 23
+	Temporary License
+	Yes ($50) 22
+	North Dakota
+Regulatory Authority: North Dakota State Board of Respiratory Care.
+North Dakota maintains a streamlined regulatory process appropriate for its population size.
+Licensure Dynamics: The state does not offer temporary licensure. Fees are moderate ($80) and consistent for both initial application and renewal. The verification system is simple and direct.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://www.ndsbcl.org/verify/)
+	Initial Endorsement Cost
+	$80.00 1
+	Renewal Cost
+	$80.00 (Annual) 5
+	Temporary License
+	No 1
+	Ohio
+Regulatory Authority: State Medical Board of Ohio.
+Ohio regulates RTs through its Medical Board, ensuring tight integration with physician oversight.
+Licensure Dynamics: Ohio is one of the more affordable states for initial licensure ($75). It does not offer a temporary license, adhering to strict medical board standards. The "e-License" system is robust and utilized across all Ohio health professions.1
+
+
+Feature
+	Detail
+	Verification Link
+	Ohio e-License
+	Initial Endorsement Cost
+	$75.00 1
+	Renewal Cost
+	$75.00 (Biennial) 5
+	Temporary License
+	No 1
+	Oklahoma
+Regulatory Authority: Oklahoma State Board of Medical Licensure and Supervision.
+Oklahoma’s medical board oversees RTs. The state has recently updated its fee schedule.
+Licensure Dynamics: Initial and renewal fees are standardized at $100. The state offers a "Provisional" license for 6 months, which requires a separate $100 fee. This allows new practitioners to work while finalizing their full licensure status. The online search is integrated with the medical board’s database.24
+
+
+Feature
+	Detail
+	Verification Link
+	(https://www.okmedicalboard.org/search)
+	Initial Endorsement Cost
+	$100.00 24
+	Renewal Cost
+	$100.00 (Biennial) 24
+	Temporary License
+	Yes ($100 Provisional) 24
+	Oregon
+Regulatory Authority: Oregon Health Authority - Health Licensing Office.
+Oregon centralizes allied health licensing under the Health Licensing Office (HLO), providing a consistent administrative experience.
+Licensure Dynamics: Oregon does not offer a temporary license, prioritizing full competency. Fees are standardized at $100. The HLO verification system is efficient and covers multiple professions, aiding in cross-disciplinary checks.1
+
+
+Feature
+	Detail
+	Verification Link
+	Oregon HLO Verification
+	Initial Endorsement Cost
+	$100.00 1
+	Renewal Cost
+	$100.00 (Biennial) 5
+	Temporary License
+	No 1
+	Pennsylvania
+Regulatory Authority: State Board of Medicine.
+Pennsylvania regulates RTs under the Board of Medicine. It is notable for having extremely low licensure fees, second only to Arkansas's subsidized rates.
+Licensure Dynamics: With an initial fee of $30 and renewal of $25, Pennsylvania presents a very low financial barrier to entry. However, the state does not offer a temporary license, meaning the low cost comes with a requirement for full prior credentialing. Verification is handled via the PALS system.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://www.pals.pa.gov/#/page/search)
+	Initial Endorsement Cost
+	$30.00 26
+	Renewal Cost
+	$25.00 (Biennial) 26
+	Temporary License
+	No 1
+	Rhode Island
+Regulatory Authority: Rhode Island Department of Health.
+Rhode Island regulates via the Department of Health. The state is small but maintains rigorous standards.
+Licensure Dynamics: The state offers a 90-day temporary permit, which is shorter than the standard 6-month permit seen elsewhere. This tight timeline forces rapid completion of exam requirements. Fees are low ($60) for both initial and renewal.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://health.ri.gov/find/licensees/)
+	Initial Endorsement Cost
+	$60.00 1
+	Renewal Cost
+	$60.00 (Biennial) 1
+	Temporary License
+	Yes (90 days) 1
+	South Carolina
+Regulatory Authority: SC Board of Medical Examiners.
+South Carolina regulates RTs through the Medical Examiners board.
+Licensure Dynamics: The state offers a limited license for a reduced fee ($40), encouraging early workforce entry. Full licensure costs are moderate. The LLR verification portal is the standard method for checking credentials.5
+
+
+Feature
+	Detail
+	Verification Link
+	(https://verify.llronline.com/LicLookup/Med/Med.aspx?div=16)
+	Initial Endorsement Cost
+	$120.00 27
+	Renewal Cost
+	$75.00 (Biennial) 27
+	Temporary License
+	Yes ($40 Limited) 27
+	South Dakota
+Regulatory Authority: South Dakota Board of Medical and Osteopathic Examiners.
+Regulation is handled by the BMOE. South Dakota is a licensure compact member for some professions, though RT compacts are still in development.
+Licensure Dynamics: The state allows for a temporary permit ($40). Fees are reasonable, facilitating practice in a state with significant rural healthcare needs. Verification is via the BMOE website.5
+
+
+Feature
+	Detail
+	Verification Link
+	(https://www.sdbmoe.gov/)
+	Initial Endorsement Cost
+	$75.00 28
+	Renewal Cost
+	$60.00 (Biennial) 28
+	Temporary License
+	Yes ($40) 28
+	Tennessee
+Regulatory Authority: Tennessee Board of Respiratory Care.
+Tennessee has a profession-specific board. The state has a tiered fee structure involving regulatory fees.
+Licensure Dynamics: The total initial cost is approximately $160 when all administrative fees are summed. Renewal is biennial. While the state has provisions for temporary practice, the focus is generally on full licensure. Verification is efficient through the Department of Health.29
+
+
+Feature
+	Detail
+	Verification Link
+	(https://apps.health.tn.gov/Licensure/)
+	Initial Endorsement Cost
+	$160.00 29
+	Renewal Cost
+	$75.00 - $85.00 (Biennial) 29
+	Temporary License
+	Yes 1
+	Texas
+Regulatory Authority: Texas Medical Board.
+Texas has a massive RT workforce regulated by the Medical Board.
+Licensure Dynamics: Texas utilizes a "Check a License" feature via the TMB. Temporary permits are available, crucial for the large number of graduates from Texas programs. Fees are moderate but can vary slightly based on state surcharges (e.g., Office of Patient Protection fees).1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://public.tmb.state.tx.us/HCP_Search/SearchInput.aspx)
+	Initial Endorsement Cost
+	$125.00 1
+	Renewal Cost
+	$106.00 - $113.00 (Biennial) 30
+	Temporary License
+	Yes 1
+	Utah
+Regulatory Authority: Division of Occupational and Professional Licensing (DOPL).
+Utah regulates via DOPL. The state is known for its efficient digital services.
+Licensure Dynamics: Utah offers a "Respiratory Care Apprentice" license, serving as its temporary permit. This apprenticeship model emphasizes the learning aspect of the pre-exam period. Fees are low ($60 initial / $52 renewal), making it an affordable state for practice.31
+
+
+Feature
+	Detail
+	Verification Link
+	(https://secure.utah.gov/llv/search/index.html)
+	Initial Endorsement Cost
+	$60.00 31
+	Renewal Cost
+	$52.00 (Biennial) 32
+	Temporary License
+	Yes (Apprentice) 33
+	Vermont
+Regulatory Authority: Office of Professional Regulation (OPR).
+Vermont regulates via the OPR. The state is unique in its high renewal fees.
+Licensure Dynamics: While initial licensure is standard (~$100), the renewal fee jumps to $240, one of the highest in the country relative to the initial cost. Vermont does not offer a temporary RT license, maintaining a high barrier to entry regarding credentialing status.5
+
+
+Feature
+	Detail
+	Verification Link
+	(https://sos.vermont.gov/opr/licensee-lookup/)
+	Initial Endorsement Cost
+	$100.00 1
+	Renewal Cost
+	$240.00 (Biennial) 5
+	Temporary License
+	No 34
+	Virginia
+Regulatory Authority: Virginia Board of Medicine.
+Virginia regulates through the Board of Medicine.
+Licensure Dynamics: The state does not offer a temporary license. Fees are consistent at $135 for both initial application and renewal. The verification system is part of the Department of Health Professions portal.1
+
+
+Feature
+	Detail
+	Verification Link
+	Virginia License Lookup
+	Initial Endorsement Cost
+	$135.00 1
+	Renewal Cost
+	$135.00 (Biennial) 1
+	Temporary License
+	No 1
+	Washington
+Regulatory Authority: Washington State Department of Health.
+Washington regulates via the DOH. The state is proactive in credentialing management.
+Licensure Dynamics: Washington offers a temporary practice permit for $50, facilitating workforce entry. Initial and renewal fees are moderate ($140 / $110). Verification is via the "Provider Credential Search".35
+
+
+Feature
+	Detail
+	Verification Link
+	(https://fortress.wa.gov/doh/providercredentialsearch/)
+	Initial Endorsement Cost
+	$140.00 35
+	Renewal Cost
+	$110.00 (Biennial) 35
+	Temporary License
+	Yes ($50) 35
+	West Virginia
+Regulatory Authority: West Virginia Board of Respiratory Care.
+West Virginia has a specific board for RTs.
+Licensure Dynamics: The state charges a relatively high initial fee ($200) but a low renewal fee ($65). It offers a student temporary permit ($75), supporting local graduates. Verification is handled through the board's dedicated site.1
+
+
+Feature
+	Detail
+	Verification Link
+	(https://wvborc.com/verify-license/)
+	Initial Endorsement Cost
+	$200.00 36
+	Renewal Cost
+	$65.00 (Annual) 1
+	Temporary License
+	Yes ($75) 36
+	Wisconsin
+Regulatory Authority: Department of Safety and Professional Services (DSPS).
+Wisconsin utilizes the DSPS for regulation.
+Licensure Dynamics: The state requires a "Statutes and Rules" exam fee ($75) in addition to the initial license fee ($75), totaling $150. A temporary certificate is available for a nominal fee ($10). Renewal is biennial.37
+
+
+Feature
+	Detail
+	Verification Link
+	(https://app.wi.gov/licensesearch)
+	Initial Endorsement Cost
+	$150.00 (Total) 37
+	Renewal Cost
+	$141.00 - $170.00 (Biennial) 37
+	Temporary License
+	Yes ($10) 37
+	Wyoming
+Regulatory Authority: Wyoming State Board for Respiratory Care.
+Wyoming's verification process has historically been an outlier. As noted in the user request, the state previously relied on downloadable spreadsheets ("Mailing List of Active Licenses") for verification. However, recent modernization efforts have introduced the ImageTrend License Management System, which now allows for a true database search.
+Licensure Dynamics: Despite the digital upgrade, the legacy list remains accessible. The state charges a flat $100 for both initial application and renewal. Temporary permits are available, supporting the rural workforce.5
+
+
+Feature
+	Detail
+	Verification Link
+	(https://wyoming.imagetrendlicense.com/lms/public/portal#/search) (Modern) OR Legacy List
+	Initial Endorsement Cost
+	$100.00 39
+	Renewal Cost
+	$100.00 (Annual) 5
+	Temporary License
+	Yes 1
+	________________
+Conclusion and Strategic Recommendations
+The data compiled in this report highlights a fragmented regulatory environment that presents significant challenges for the interstate mobility of Respiratory Therapists. While the NBRC credentials (CRT/RRT) provide a national standard for clinical competency, the legal right to practice is gatekept by 49 different sets of rules (excluding Alaska).
+Key Takeaways
+1. Verification Modernization: The move from static lists to dynamic portals (as seen in Wyoming) is positive, but the user experience varies wildly. States like Florida and California offer "gold standard" verification tools, while others remain clunky.
+2. Financial Disparities: The cost to enter the workforce varies from $4.00 in Arkansas to over $360.00 in Nevada. This 90x differential is difficult to justify based on administrative costs alone and reflects deep policy differences regarding workforce incentivization vs. regulation funding.
+3. Temporary Licensure Gap: The 50/50 split on temporary licensure creates a "two-speed" system for new graduates. Those in states with permits can work immediately; those in states without must wait for exam results and processing, potentially losing months of income.
+For the recruiting or credentialing professional, this report serves as a roadmap to navigating these complexities. It underscores the necessity of checking primary sources directly—using the provided links—as fees and regulations are subject to legislative change.
+End of Report.
+Works cited
+1. Respiratory Therapist Licensure Guide: State-by-State Requirements - Trusted Health, accessed January 22, 2026, https://www.trustedhealth.com/allied-career-guide/respiratory-therapist/licensure-guide
+2. Respiratory Requirements By State - Institute for Continuing Education, accessed January 22, 2026, https://ceu.org/respiratory-requirements.php
+3. Respiratory Care - Alaska - Midlands Technical College, accessed January 22, 2026, https://www.midlandstech.edu/node/10182
+4. Alaska Respiratory Therapist Licensure Statement - Eastern Oklahoma State College, accessed January 22, 2026, https://www.eosc.edu/Content/Uploads/EOSC/files/Alaska_Respiratory_Therapist_Licensure_Statement.pdf
+5. Respiratory Therapist State License Renewal Information - AARC, accessed January 22, 2026, https://www.aarc.org/advocacy/state-advocacy/respiratory-therapist-state-licensure-information/
+6. Fee Schedule - Arkansas State Medical Board, accessed January 22, 2026, https://armedicalboard.adh.arkansas.gov/Professionals/pdf/Fees.pdf
+7. 060.00.05 Ark. Code R. 005 - Amendment to Regulation 10, Section 3.5 and 4 - Renewal Fee for License of Repiratory Therapist, accessed January 22, 2026, https://www.law.cornell.edu/regulations/arkansas/060-00-05-Ark-Code-R-005
+8. Respiratory Care Board of California, accessed January 22, 2026, https://www.rcb.ca.gov/
+9. Home - FL HealthSource • Health Care Resources for Consumers & Providers, accessed January 22, 2026, https://flhealthsource.gov/
+10. Respiratory Care Licensing Information - PLA - IN.gov, accessed January 22, 2026, https://www.in.gov/pla/professions/respiratory-care-home/respiratory-care-licensing-information/
+11. Respiratory License Renewal - Michigan, accessed January 22, 2026, https://respiratoryassociates.com/state-ce-requirements/michigan/
+12. MCL - Section 333.16344 - Michigan Legislature, accessed January 22, 2026, https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-333-16344
+13. Michigan Respiratory Therapy CE Requirements 2026, accessed January 22, 2026, https://atrespiratorylectures.com/state-requirement/Michigan
+14. Fee List / Minnesota Board of Medical Practice - MN.gov, accessed January 22, 2026, https://mn.gov/boards/medical-practice/licensing/administration/fees/index.jsp
+15. Sec. 147C.40 MN Statutes, accessed January 22, 2026, https://www.revisor.mn.gov/statutes/cite/147C.40
+16. 20 CSR 2255-1.040 - Fees | State Regulations | US Law | LII / Legal Information Institute, accessed January 22, 2026, https://www.law.cornell.edu/regulations/missouri/20-CSR-2255-1-040
+17. Respiratory License Renewal - Nebraska, accessed January 22, 2026, https://respiratoryassociates.com/state-ce-requirements/nebraska/
+18. Respiratory License Renewal - Nevada, accessed January 22, 2026, https://respiratoryassociates.com/state-ce-requirements/nevada/
+19. INITIAL LICENSURE FEES (JULY 1, 2025 THROUGH JUNE 30, 2027) - Medical Examiners Board, accessed January 22, 2026, https://medboard.nv.gov/uploadedFiles/medboardnvgov/content/Forms/Licensure%20Fees(4).pdf
+20. Respiratory Therapist Jobs in New York - NY | School Degree and Requirements for Training Programs, accessed January 22, 2026, https://www.respiratorytherapistlicense.com/new-york/
+21. Respiratory Therapist - New York State Department of Labor, accessed January 22, 2026, https://statistics.labor.ny.gov/olcny/respiratory-therapist.shtm
+22. 21 NCAC 61 .0204 FEES (a) Fees are as follows: (1) For an initial application, a fee of fifty dollars ($50.00); (2) For issuanc, accessed January 22, 2026, http://reports.oah.state.nc.us/ncac/title%2021%20-%20occupational%20licensing%20boards%20and%20commissions/chapter%2061%20-%20respiratory%20care%20board/21%20ncac%2061%20.0204.pdf
+23. Frequently Asked Questions - North Carolina Respiratory Care Board, accessed January 22, 2026, https://ncrcb.org/frequently-asked-questions/
+24. OKLAHOMA STATE BOARD OF MEDICAL LICENSURE AND SUPERVISION 101 NE 51ST STREET OKLAHOMA CITY OK 73105 Phone: (405)962-1470 email:, accessed January 22, 2026, https://www.okmedicalboard.org/respiratory_care_practitioners/download/113/RC+PR+Application+Instructions_102025.pdf
+25. Okla. Admin. Code § 435:1-1-7 - Fees | State Regulations - Law.Cornell.Edu, accessed January 22, 2026, https://www.law.cornell.edu/regulations/oklahoma/OAC-435-1-1-7
+26. Respiratory Therapist Licensure Requirements Snapshot - Commonwealth of Pennsylvania, accessed January 22, 2026, https://www.pa.gov/agencies/dos/department-and-offices/bpoa/boards-commissions/medicine/respiratory-therapist-licensure-snapshot
+27. South Carolina Board of Medical Examiners, accessed January 22, 2026, https://llr.sc.gov/med/fees.aspx
+28. Administrative Rules - 20:70 - 01 - South Dakota Legislature, accessed January 22, 2026, https://sdlegislature.gov/Rules/Administrative/20:70:01:01
+29. Tennessee Board of Respiratory Care - TN.gov, accessed January 22, 2026, https://www.tn.gov/content/dam/tn/health/healthprofboards/rc/11.2019-Respiratory_Care_Newsletter.pdf
+30. Respiratory Care Practitioner Renewal - Texas Medical Board, accessed January 22, 2026, https://www.tmb.state.tx.us/apply-renew/respiratory-care-practitioner/respiratory-care-practitioner-certificate-renewal
+31. accessed January 22, 2026, https://respiratoryassociates.com/state-ce-requirements/utah/#:~:text=How%20much%20does%20my%20renewal,The%20renewal%20fee%20is%20%2452.
+32. Renew a Respiratory Care License - Utah Department of Commerce, accessed January 22, 2026, https://commerce.utah.gov/dopl/respiratory-care/renew-a-license/
+33. Apply for a Respiratory Care License - Utah Department of Commerce, accessed January 22, 2026, https://commerce.utah.gov/dopl/respiratory-care/apply-for-a-license/
+34. Respiratory Care Practitioner Forms & Instructions - Vermont Secretary of State, accessed January 22, 2026, https://sos.vermont.gov/respiratory-care-practitioners/forms-instructions/
+35. WAC 246-928-990 Respiratory care fees and renewal cycle. - | WA.gov, accessed January 22, 2026, https://app.leg.wa.gov/wac/default.aspx?cite=246-928-990&pdf=true
+36. West Virginia Board of Respiratory Care 106 Dee Drive, Suite 1, Charleston, WV 25311 Licensed Respiratory Therapist Registered (, accessed January 22, 2026, https://www.wvborc.com/Content/WVBORC%20License%20Application%209.2024.pdf
+37. Respiratory Therapist Jobs in Wisconsin – WI | School, Degree and Requirements for Training Programs, accessed January 22, 2026, https://www.respiratorytherapistlicense.com/wisconsin/
+38. Respiratory Care Practitioner - DSPS - Wisconsin.gov, accessed January 22, 2026, https://dsps.wi.gov/Pages/Professions/RespiratoryCarePractitioner/Default.aspx
+39. 2024.04.01 Respiratory Care Application - Google Docs, accessed January 22, 2026, https://docs.google.com/document/d/1Bsc_8b8mZU_3MBxwcVpycLgCZpd4l79U4sFlDwquDvo/edit?usp=sharing
+40. Wyoming Online Licensure System, accessed January 22, 2026, https://wyoming.imagetrendlicense.com/

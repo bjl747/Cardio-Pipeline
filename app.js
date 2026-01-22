@@ -150,23 +150,188 @@ async function fetchUserMap() {
     } catch (e) { console.error("Error fetching user map:", e); }
 }
 
+const stateLicenses = [
+    { name: "Alabama", abbr: "AL", quick: false, link: "https://www.asbrt.alabama.gov/applicants/verify-license/", costInit: "$100.00", costRenew: "$75.00", temp: true },
+    { name: "Alaska", abbr: "AK", quick: false, link: "#", costInit: "$0.00", costRenew: "$0.00", temp: false, note: "No License Required" },
+    { name: "Arizona", abbr: "AZ", quick: true, link: "#", costInit: "$273.00", costRenew: "$153.00", temp: false },
+    { name: "Arkansas", abbr: "AR", quick: false, link: "https://www.armedicalboard.org/Public.aspx", costInit: "$4.00", costRenew: "$2.00", temp: true },
+    { name: "California", abbr: "CA", quick: false, link: "https://search.dca.ca.gov/", costInit: "$300.00", costRenew: "$300.00", temp: false },
+    { name: "Colorado", abbr: "CO", quick: true, link: "https://apps.colorado.gov/dora/licensing/Lookup/LicenseLookup.aspx", costInit: "$85.00", costRenew: "$24.00 - $76.00", temp: false },
+    { name: "Connecticut", abbr: "CT", quick: true, link: "https://www.elicense.ct.gov/Lookup/LicenseLookup.aspx", costInit: "$190.00", costRenew: "$105.00", temp: true },
+    { name: "Delaware", abbr: "DE", quick: false, link: "https://dpronline.delaware.gov/VerifyLicense.aspx", costInit: "$143.00", costRenew: "$101.00", temp: true },
+    { name: "Florida", abbr: "FL", quick: true, link: "https://mqa-internet.doh.state.fl.us/MQASearchServices/HealthCareProviders", costInit: "$105.00", costRenew: "$95.00 - $120.00", temp: false },
+    { name: "Georgia", abbr: "GA", quick: false, link: "https://gcmb.mylicense.com/verification/", costInit: "$150.00", costRenew: "$105.00", temp: true },
+    { name: "Hawaii", abbr: "HI", quick: false, link: "https://pvl.ehawaii.gov/pvlsearch/", costInit: "$340.00", costRenew: "$270.00 - $340.00", temp: false },
+    { name: "Idaho", abbr: "ID", quick: true, link: "https://bom.idaho.gov/BOMPortal/Home.aspx", costInit: "$100.00", costRenew: "$65.00", temp: true },
+    { name: "Illinois", abbr: "IL", quick: true, link: "https://ileduc.illinois.gov/IDFPR/Lookup/LicenseLookup.aspx", costInit: "$100.00", costRenew: "$100.00 - $120.00", temp: true },
+    { name: "Indiana", abbr: "IN", quick: false, link: "https://mylicense.in.gov/EVerification/", costInit: "$50.00", costRenew: "$50.00", temp: true },
+    { name: "Iowa", abbr: "IA", quick: false, link: "https://idph.iowa.gov/Licensure/Verify-a-License", costInit: "$75.00", costRenew: "$75.00", temp: false },
+    { name: "Kansas", abbr: "KS", quick: false, link: "https://www.ksbha.org/verification/verification.shtml", costInit: "$80.00", costRenew: "$75.00", temp: true },
+    { name: "Kentucky", abbr: "KY", quick: false, link: "https://kbrc.ky.gov/Pages/Verification.aspx", costInit: "$150.00", costRenew: "$90.00", temp: true },
+    { name: "Louisiana", abbr: "LA", quick: false, link: "https://www.lsbme.la.gov/content/verification-licensure", costInit: "$125.00", costRenew: "$85.00", temp: true },
+    { name: "Maine", abbr: "ME", quick: true, link: "https://www.pfr.maine.gov/almsonline/almsquery/welcome.aspx", costInit: "$135.00", costRenew: "$65.00 - $135.00", temp: true },
+    { name: "Maryland", abbr: "MD", quick: false, link: "https://www.mbp.state.md.us/bpqapp/", costInit: "$200.00", costRenew: "$176.00", temp: false },
+    { name: "Massachusetts", abbr: "MA", quick: true, link: "#", costInit: "$260.00", costRenew: "$110.00", temp: true },
+    { name: "Michigan", abbr: "MI", quick: false, link: "https://val.lara.state.mi.us/Val/License/Search", costInit: "$95.00", costRenew: "~$162.00", temp: true },
+    { name: "Minnesota", abbr: "MN", quick: false, link: "https://mpb.hlb.state.mn.us/#/online-search", costInit: "$222.00", costRenew: "$90.00", temp: true },
+    { name: "Mississippi", abbr: "MS", quick: false, link: "https://msdh.ms.gov/msdhsite/_static/30,0,82.html", costInit: "$75.00", costRenew: "$100.00", temp: true },
+    { name: "Missouri", abbr: "MO", quick: true, link: "https://pr.mo.gov/licensee-search-division.asp", costInit: "$40.00", costRenew: "$30.00", temp: true },
+    { name: "Montana", abbr: "MT", quick: true, link: "#", costInit: "$100.00", costRenew: "$75.00", temp: false },
+    { name: "Nebraska", abbr: "NE", quick: true, link: "https://www.nebraska.gov/LISSearch/search.cgi", costInit: "$118.00", costRenew: "$118.00", temp: true },
+    { name: "Nevada", abbr: "NV", quick: false, link: "https://vs.nv.gov/License/Search", costInit: "~$285.00", costRenew: "$185.00", temp: false },
+    { name: "New Hampshire", abbr: "NH", quick: true, link: "#", costInit: "$165.00", costRenew: "$165.00", temp: false },
+    { name: "New Jersey", abbr: "NJ", quick: false, link: "#", costInit: "$285.00", costRenew: "$160.00", temp: true },
+    { name: "New Mexico", abbr: "NM", quick: false, link: "https://www.rld.nm.gov/verify-a-license/", costInit: "$150.00", costRenew: "$150.00", temp: false },
+    { name: "New York", abbr: "NY", quick: false, link: "http://www.op.nysed.gov/opsearches.htm", costInit: "$294.00", costRenew: "~$237.00", temp: true },
+    { name: "North Carolina", abbr: "NC", quick: true, link: "https://portal.ncrcb.org/Verification/Search.aspx", costInit: "~$213.00", costRenew: "$75.00", temp: true },
+    { name: "North Dakota", abbr: "ND", quick: true, link: "https://www.ndsbcl.org/verify/", costInit: "$80.00", costRenew: "$80.00", temp: false },
+    { name: "Ohio", abbr: "OH", quick: false, link: "#", costInit: "$75.00", costRenew: "$75.00", temp: false },
+    { name: "Oklahoma", abbr: "OK", quick: false, link: "https://www.okmedicalboard.org/search", costInit: "$100.00", costRenew: "$100.00", temp: true },
+    { name: "Oregon", abbr: "OR", quick: false, link: "#", costInit: "$100.00", costRenew: "$100.00", temp: false },
+    { name: "Pennsylvania", abbr: "PA", quick: false, link: "https://www.pals.pa.gov/#/page/search", costInit: "$30.00", costRenew: "$25.00", temp: false },
+    { name: "Rhode Island", abbr: "RI", quick: false, link: "https://health.ri.gov/find/licensees/", costInit: "$60.00", costRenew: "$60.00", temp: true },
+    { name: "South Carolina", abbr: "SC", quick: false, link: "https://verify.llronline.com/LicLookup/Med/Med.aspx?div=16", costInit: "$120.00", costRenew: "$75.00", temp: true },
+    { name: "South Dakota", abbr: "SD", quick: true, link: "https://www.sdbmoe.gov/", costInit: "$75.00", costRenew: "$60.00", temp: true },
+    { name: "Tennessee", abbr: "TN", quick: false, link: "https://apps.health.tn.gov/Licensure/", costInit: "$160.00", costRenew: "$75.00 - $85.00", temp: true },
+    { name: "Texas", abbr: "TX", quick: false, link: "https://public.tmb.state.tx.us/HCP_Search/SearchInput.aspx", costInit: "$125.00", costRenew: "$106.00 - $113.00", temp: true },
+    { name: "Utah", abbr: "UT", quick: true, link: "https://secure.utah.gov/llv/search/index.html", costInit: "$60.00", costRenew: "$52.00", temp: true },
+    { name: "Vermont", abbr: "VT", quick: true, link: "https://sos.vermont.gov/opr/licensee-lookup/", costInit: "$100.00", costRenew: "$240.00", temp: false },
+    { name: "Virginia", abbr: "VA", quick: false, link: "#", costInit: "$135.00", costRenew: "$135.00", temp: false },
+    { name: "Washington", abbr: "WA", quick: false, link: "https://fortress.wa.gov/doh/providercredentialsearch/", costInit: "$140.00", costRenew: "$110.00", temp: true },
+    { name: "West Virginia", abbr: "WV", quick: true, link: "https://wvborc.com/verify-license/", costInit: "$200.00", costRenew: "$65.00", temp: true },
+    { name: "Wisconsin", abbr: "WI", quick: true, link: "https://app.wi.gov/licensesearch", costInit: "$150.00", costRenew: "$141.00 - $170.00", temp: true },
+    { name: "Wyoming", abbr: "WY", quick: true, link: "https://wyoming.imagetrendlicense.com/lms/public/portal#/search", costInit: "$100.00", costRenew: "$100.00", temp: true }
+];
+
 window.switchTab = function (view) {
     if (view === currentView) return;
-    if (view === 'mine') loadMyCandidates();
-    if (view === 'team') loadTeamCandidates();
+
+    // License View Logic
+    const pipelineContainer = document.getElementById('pipelineContainer');
+    const licensesContainer = document.getElementById('licensesContainer');
+
+    if (view === 'licenses') {
+        renderLicenses();
+        pipelineContainer.classList.add('hidden');
+        licensesContainer.classList.remove('hidden');
+    } else {
+        pipelineContainer.classList.remove('hidden');
+        licensesContainer.classList.add('hidden');
+        if (view === 'mine') loadMyCandidates();
+        if (view === 'team') loadTeamCandidates();
+    }
+
+    currentView = view;
+    updateTabs();
 }
+
+function renderLicenses() {
+    const container = document.getElementById('licensesList');
+    container.innerHTML = '';
+
+    stateLicenses.forEach(state => {
+        const item = document.createElement('div');
+        item.className = "bg-[#0f172a] border border-purple-900/30 rounded overflow-hidden group transition-all duration-300 hover:border-purple-500/50";
+
+        const verifyBtnHtml = (state.link && state.link !== '#') ?
+            `<a href="${state.link}" target="_blank" class="mt-4 block w-full text-center py-2 rounded border border-purple-500/50 text-purple-400 hover:bg-purple-900/20 hover:text-white transition font-bold uppercase text-xs tracking-wider">
+                Verify License ↗
+            </a>` :
+            `<button disabled class="mt-4 block w-full text-center py-2 rounded border border-slate-700 text-slate-500 cursor-not-allowed font-bold uppercase text-xs tracking-wider">
+                Link Unavailable
+            </button>`;
+
+        const noteHtml = state.note ? `<li class="text-xs text-amber-400 italic pt-2 border-t border-slate-800 mt-2">${state.note}</li>` : '';
+
+        item.innerHTML = `
+            <div class="px-5 py-4 flex items-center justify-between cursor-pointer bg-slate-900/50 hover:bg-purple-900/10 transition" onclick="window.toggleLicense('${state.abbr}')">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded flex items-center justify-center bg-slate-800 text-purple-400 font-bold border border-slate-700 group-hover:bg-purple-900/20 group-hover:text-purple-300 group-hover:border-purple-500/30 transition">
+                        ${state.abbr}
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-200 group-hover:text-white transition">${state.name}</h3>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    ${state.quick ? '<span class="text-[10px] font-bold text-emerald-400 bg-emerald-900/20 border border-emerald-900/50 px-2 py-1 rounded uppercase tracking-wider">Quick State</span>' : ''}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-500 group-hover:text-purple-400 transform transition-transform duration-300" id="arrow-${state.abbr}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            </div>
+
+            <div id="details-${state.abbr}" class="hidden bg-slate-950/50 border-t border-purple-900/30">
+                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                    <div>
+                         <p class="text-[10px] font-bold text-purple-500/70 uppercase tracking-widest mb-2">License Details</p>
+                         <ul class="space-y-2 text-slate-300">
+                            <li class="flex justify-between border-b border-slate-800 pb-1">
+                                <span>Temp License Available?</span>
+                                <span class="font-mono ${state.temp ? 'text-emerald-400' : 'text-rose-400'}">${state.temp ? 'YES' : 'NO'}</span>
+                            </li>
+                            <li class="flex justify-between border-b border-slate-800 pb-1">
+                                <span>Quick License State?</span>
+                                <span class="font-mono ${state.quick ? 'text-emerald-400' : 'text-slate-500'}">${state.quick ? 'YES' : 'NO'}</span>
+                            </li>
+                            ${noteHtml}
+                         </ul>
+                    </div>
+                    <div>
+                         <p class="text-[10px] font-bold text-purple-500/70 uppercase tracking-widest mb-2">Costs</p>
+                         <ul class="space-y-2 text-slate-300">
+                            <li class="flex justify-between border-b border-slate-800 pb-1">
+                                <span>Initial Application</span>
+                                <span class="font-mono text-white">${state.costInit}</span>
+                            </li>
+                            <li class="flex justify-between border-b border-slate-800 pb-1">
+                                <span>Renewal Cost</span>
+                                <span class="font-mono text-white">${state.costRenew}</span>
+                            </li>
+                         </ul>
+
+                         ${verifyBtnHtml}
+                    </div>
+                </div>
+            </div>
+        `;
+        container.appendChild(item);
+    });
+}
+
+window.toggleLicense = function (abbr) {
+    const el = document.getElementById(`details-${abbr}`);
+    const arrow = document.getElementById(`arrow-${abbr}`);
+    if (el.classList.contains('hidden')) {
+        // Close others? Optional but cleaner
+        document.querySelectorAll('[id^="details-"]').forEach(d => d.classList.add('hidden'));
+        document.querySelectorAll('[id^="arrow-"]').forEach(a => a.classList.remove('rotate-180'));
+
+        el.classList.remove('hidden');
+        arrow.classList.add('rotate-180');
+    } else {
+        el.classList.add('hidden');
+        arrow.classList.remove('rotate-180');
+    }
+};
 
 function updateTabs() {
     const btnMine = document.getElementById('tabMine');
     const btnTeam = document.getElementById('tabTeam');
-    if (!btnMine || !btnTeam) return;
+    const btnLicenses = document.getElementById('tabLicenses');
+
+    if (!btnMine || !btnTeam || !btnLicenses) return;
+
+    // Reset All
+    [btnMine, btnTeam, btnLicenses].forEach(btn => {
+        btn.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-slate-500 hover:text-slate-300 border-b-2 border-transparent hover:border-slate-800 transition-all";
+    });
 
     if (currentView === 'mine') {
         btnMine.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-rose-500 border-b-2 border-rose-500 bg-slate-900/30 transition-all hover:bg-slate-900/50";
-        btnTeam.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-slate-500 hover:text-slate-300 border-b-2 border-transparent hover:border-slate-800 transition-all";
-    } else {
-        btnMine.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-slate-500 hover:text-slate-300 border-b-2 border-transparent hover:border-slate-800 transition-all";
+    } else if (currentView === 'team') {
         btnTeam.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-rose-500 border-b-2 border-rose-500 bg-slate-900/30 transition-all hover:bg-slate-900/50";
+    } else if (currentView === 'licenses') {
+        btnLicenses.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-purple-400 border-b-2 border-purple-500 bg-purple-900/10 transition-all hover:bg-purple-900/20";
     }
 }
 

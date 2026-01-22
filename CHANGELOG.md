@@ -2,6 +2,12 @@
 
 All notable changes to the "Pipeline Tracker" project will be documented in this file.
 
+## [1.8.0] - 2026-01-22
+### Added
+- **Licenses Tab**: A new tab featuring a 50-state list of license requirements.
+- **Quick License Logic**: Visual indicators for states with quick licensing processes.
+- **Theme**: Purple neon styling for the new section.
+
 ## [1.7.0] - 2026-01-21
 ### Added
 - **Geo Preferences**:
@@ -15,6 +21,9 @@ All notable changes to the "Pipeline Tracker" project will be documented in this
 
 ### Fixed
 - **Pay Data Usage**: Fixed an issue where Pay Requirements were saving under a legacy key (`pay`) but trying to display a new key (`payReq`). Unified logic to use `payReq` for all new saves and fallback to `pay` for existing records.
+
+### Documentation
+- **AI Handover**: Created `AI_INSTRUCTIONS.md`, a comprehensive guide for future AI assistants to understand the project architecture, workflow (GitHub deployment), and key features (Fire-to-Ice, Admin Mode, Geo Logic).
 
 ## [1.6.0] - 2026-01-21
 ### Added
