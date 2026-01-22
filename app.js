@@ -459,7 +459,7 @@ function renderList() {
                         </div>
                         <div>
                             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Pay Requirements</p>
-                            <p class="text-slate-300 font-mono text-xs">${(c.payReq || c.pay) ? `$${c.payReq || c.pay}/wk` : 'Open'}</p>
+                            <p class="text-slate-300 font-mono text-xs">${(c.payReq || c.pay) ? '$' + (c.payReq || c.pay).toString().replace(/^\$+|(\/wk)+$/ig, '') + '/wk' : 'Open'}</p>
                         </div>
                         <div>
                             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Active Licenses</p>
