@@ -2,6 +2,10 @@
 
 All notable changes to the "Pipeline Tracker" project will be documented in this file.
 
+## [1.8.1] - 2026-01-22
+### Fixed
+- **Talked Button**: Fixed a crash when clicking "Talked" by importing the missing `serverTimestamp` function.
+
 ## [1.8.0] - 2026-01-22
 ### Added
 - **Licenses Tab**: A new tab featuring a 50-state list of license requirements.
