@@ -653,7 +653,7 @@ function renderList() {
                 
                 <div class="px-6 pb-6 pt-0 flex justify-between items-center border-t border-slate-800/30 mt-4 pt-4">
                     <div class="flex items-center gap-3">
-                        <button onclick="window.logTalk('${c.id}')" class="text-xs font-bold text-emerald-500 hover:text-emerald-400 uppercase tracking-wider px-3 py-2 border border-emerald-900/30 rounded hover:bg-emerald-900/20 transition flex items-center gap-2">
+                        <button onclick="window.logTalk('${c.id}', '${c.ownerId || currentUser.uid}')" class="text-xs font-bold text-emerald-500 hover:text-emerald-400 uppercase tracking-wider px-3 py-2 border border-emerald-900/30 rounded hover:bg-emerald-900/20 transition flex items-center gap-2">
                             <span>🕒</span> Talked
                         </button>
                         <span class="text-[10px] text-slate-500 font-mono">
@@ -1230,9 +1230,9 @@ window.copyToClipboard = function (text) {
 };
 
 // --- LOG TALK HELPER ---
-window.logTalk = async function (id) {
+window.logTalk = async function (id, ownerId) {
     try {
-        const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'candidates', id);
+        const docRef = doc(db, 'artifacts', appId, 'users', ownerId || currentUser.uid, 'candidates', id);
         await updateDoc(docRef, { lastTalked: serverTimestamp() });
         showToast("Talk Logged");
     } catch (e) {
