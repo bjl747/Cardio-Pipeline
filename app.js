@@ -1118,11 +1118,25 @@ window.selectRegion = function (region) {
     const container = document.getElementById('map-container');
     const input = document.getElementById('statesInterested');
 
-    // Select these states on map
-    states.forEach(code => {
+    // Check if currently fully selected
+    const allSelected = states.every(code => {
         const path = container.querySelector(`path[id="US-${code}"]`);
-        if (path) path.classList.add('selected');
+        return path && path.classList.contains('selected');
     });
+
+    if (allSelected) {
+        // Deselect
+        states.forEach(code => {
+            const path = container.querySelector(`path[id="US-${code}"]`);
+            if (path) path.classList.remove('selected');
+        });
+    } else {
+        // Select
+        states.forEach(code => {
+            const path = container.querySelector(`path[id="US-${code}"]`);
+            if (path) path.classList.add('selected');
+        });
+    }
 
     // Update Input
     // Get all currently selected
