@@ -24,6 +24,8 @@ let userMap = {}; // Map uid -> Display Name
 let editingId = null;
 let currentView = 'mine'; // 'mine' or 'team'
 let unsubscribeCandidates = null; // To handle switching listeners
+let currentPayrollDate = null; // Tracks the Saturday of the week being viewed
+
 
 // --- 1. SESSION PERSISTENCE ---
 setPersistence(auth, browserSessionPersistence)
@@ -214,9 +216,21 @@ window.switchTab = function (view) {
         renderLicenses();
         pipelineContainer.classList.add('hidden');
         licensesContainer.classList.remove('hidden');
+    } else if (view === 'payroll') {
+        pipelineContainer.classList.add('hidden');
+        licensesContainer.classList.add('hidden');
+        document.getElementById('payrollContainer').classList.remove('hidden');
+
+        // Initialize Date if null
+        if (!currentPayrollDate) {
+            currentPayrollDate = getLastSaturday(new Date());
+        }
+        updatePayrollHeader();
+        renderPayrollView();
     } else {
         pipelineContainer.classList.remove('hidden');
         licensesContainer.classList.add('hidden');
+        document.getElementById('payrollContainer').classList.add('hidden');
         if (view === 'mine') loadMyCandidates();
         if (view === 'team') loadTeamCandidates();
     }
@@ -332,10 +346,359 @@ function updateTabs() {
         btnTeam.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-rose-500 border-b-2 border-rose-500 bg-slate-900/30 transition-all hover:bg-slate-900/50";
     } else if (currentView === 'licenses') {
         btnLicenses.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-purple-400 border-b-2 border-purple-500 bg-purple-900/10 transition-all hover:bg-purple-900/20";
+    } else if (currentView === 'payroll') {
+        const btn = document.getElementById('tabPayroll');
+        if (btn) btn.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-emerald-400 border-b-2 border-emerald-500 bg-emerald-900/10 transition-all hover:bg-emerald-900/20";
     }
 }
 
 let openPanelId = null; // Track open panel globally
+
+// --- PAYROLL LOGIC ---
+
+const payrollPeriods = [
+    { id: 1, start: '2025-12-28', end: '2026-01-24' },
+    { id: 2, start: '2026-01-25', end: '2026-02-21' },
+    { id: 3, start: '2026-02-22', end: '2026-03-28' },
+    { id: 4, start: '2026-03-29', end: '2026-04-25' },
+    { id: 5, start: '2026-04-26', end: '2026-05-23' },
+    { id: 6, start: '2026-05-24', end: '2026-06-27' },
+    { id: 7, start: '2026-06-28', end: '2026-07-25' },
+    { id: 8, start: '2026-07-26', end: '2026-08-22' },
+    { id: 9, start: '2026-08-23', end: '2026-09-26' },
+    { id: 10, start: '2026-09-27', end: '2026-10-24' },
+    { id: 11, start: '2026-10-25', end: '2026-11-21' },
+    { id: 12, start: '2026-11-22', end: '2026-12-26' }
+];
+
+function getLastSaturday(date) {
+    const d = new Date(date);
+    d.setHours(12, 0, 0, 0); // Avoid timezone shifts
+    const day = d.getDay();
+    // If today is Saturday (6), return today. Else, go back.
+    // Actually, user said "processing week end 1/17" on 1/22. 
+    // 1/17 was Saturday. 1/22 is Thursday.
+    // So distinct logic: Return standard 'Last Saturday'.
+    const diff = d.getDate() - day + (day === 6 ? 0 : -1);
+    // Wait: if day is 6 (Sat), diff = 0. Correct.
+    // if day is 0 (Sun), diff = -1 -> Returns Sat. Correct.
+    // if day is 4 (Thu), diff = 4 - 4 - 1 = -1? No.
+    // Standard approach:
+    // const day = date.getDay();
+    // const diff = date.getDate() - day - 1 + (day == 6 ? 7 : 0);
+
+    // Let's use simple loop
+    while (d.getDay() !== 6) {
+        d.setDate(d.getDate() - 1);
+    }
+    return d;
+}
+
+function getPeriodInfo(dateStr) {
+    // Check which period this date falls into
+    // dateStr is YYYY-MM-DD
+    for (let p of payrollPeriods) {
+        if (dateStr >= p.start && dateStr <= p.end) {
+            // Calculate week number
+            const start = new Date(p.start);
+            const current = new Date(dateStr);
+            const diffTime = Math.abs(current - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const weekNum = Math.floor(diffDays / 7) + 1;
+            return { period: p.id, week: weekNum, label: `P${p.id}W${weekNum}` };
+        }
+    }
+    return { period: 0, week: 0, label: "Unknown" };
+}
+
+function formatDateKey(date) {
+    return date.toISOString().split('T')[0];
+}
+
+window.changePayrollWeek = function (delta) {
+    if (!currentPayrollDate) return;
+
+    const newDate = new Date(currentPayrollDate);
+    newDate.setDate(newDate.getDate() + (delta * 7));
+
+    // Limits: 
+    // Back 5 weeks from TODAY's last saturday?
+    // User said: "edit a futur week... Forward only 1... back up to 5 weeks"
+    // I should probably anchor the limits to the actual "Last Saturday".
+
+    const anchor = getLastSaturday(new Date());
+    const forwardLimit = new Date(anchor);
+    forwardLimit.setDate(forwardLimit.getDate() + 7); // +1 week
+
+    const backLimit = new Date(anchor);
+    backLimit.setDate(backLimit.getDate() - (5 * 7)); // -5 weeks
+
+    if (newDate > forwardLimit) {
+        showToast("Cannot navigate further forward.");
+        return;
+    }
+    if (newDate < backLimit) {
+        showToast("Cannot navigate further back.");
+        return;
+    }
+
+    currentPayrollDate = newDate;
+    updatePayrollHeader();
+    renderPayrollView();
+}
+
+function updatePayrollHeader() {
+    const display = document.getElementById('payrollDateDisplay');
+    if (display && currentPayrollDate) {
+        display.textContent = currentPayrollDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    // Totals updated in render
+}
+
+function renderPayrollView() {
+    const list = document.getElementById('payrollList');
+    list.innerHTML = '';
+
+    const weekKey = formatDateKey(currentPayrollDate);
+
+    // Filter Candidates: Placed AND Active during this week
+    // Active means: contractStart <= currentPayrollDate AND contractEnd >= currentPayrollDate (roughly)
+
+    const activeCandidates = candidates.filter(c => {
+        if (c.status !== 'Placed' || !c.contractStart || !c.contractEnd) return false;
+        // Check overlap
+        // We use currentPayrollDate (Saturday) as the check point.
+        // If they started on or before this Saturday AND ended on or after the Sunday of this week?
+        // Let's keep it simple: Start <= Saturday AND End >= Sunday of this week (Start of week)
+
+        const weekStart = new Date(currentPayrollDate);
+        weekStart.setDate(weekStart.getDate() - 6);
+        const weekStartStr = formatDateKey(weekStart);
+        const weekEndStr = formatDateKey(currentPayrollDate);
+
+        return c.contractStart <= weekEndStr && c.contractEnd >= weekStartStr;
+    });
+
+    activeCandidates.sort((a, b) => a.fullName.localeCompare(b.fullName));
+
+    if (activeCandidates.length === 0) {
+        list.innerHTML = '<div class="text-center text-slate-500 py-10">No active travelers for this week.</div>';
+        // Reset totals
+        document.getElementById('weekTotalMargin').textContent = "$0.00";
+        // Period total needs to be calculated regardless of who is visible? 
+        // Or only for visible? "For each recruiter... show their travelers"
+        // I will assume totals are based on the currently filtered list (Team vs Mine).
+        document.getElementById('periodTotalMargin').textContent = "$0.00";
+        return;
+    }
+
+    let weekTotal = 0;
+
+    activeCandidates.forEach(c => {
+        const payrollData = c.payroll || {};
+        const weeks = payrollData.weeks || {};
+        const weekData = weeks[weekKey] || { timecardProcessed: false, hoursWorked: 0, ukgVerified: false, calculatedMargin: 0 };
+
+        weekTotal += (weekData.calculatedMargin || 0);
+
+        // Status Color: Green if Timecard AND Hours > 0. Else Red.
+        const isGreen = weekData.timecardProcessed && weekData.hoursWorked > 0;
+        const statusClass = isGreen
+            ? "border-l-4 border-l-emerald-500 bg-emerald-900/10"
+            : "border-l-4 border-l-red-500 bg-red-900/10";
+
+        const card = document.createElement('div');
+        card.className = `bg-[#0f172a] border border-slate-800 rounded p-4 ${statusClass} flex flex-col gap-4`;
+
+        card.innerHTML = `
+            <div class="flex justify-between items-center cursor-pointer" onclick="window.togglePayrollDetails('${c.id}')">
+                <div>
+                    <h3 class="font-bold text-slate-200 text-lg">${c.fullName}</h3>
+                    <p class="text-[10px] text-slate-500 uppercase">${c.credentials || 'RT'} - ${c.ownerName || 'My Candidate'}</p>
+                </div>
+                <div class="flex items-center gap-6" onclick="event.stopPropagation()">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" onchange="window.updatePayroll('${c.id}', 'timecard', this.checked)" 
+                            class="w-5 h-5 rounded border-slate-600 bg-slate-800 text-emerald-500 focus:ring-emerald-900" 
+                            ${weekData.timecardProcessed ? 'checked' : ''}>
+                        <span class="text-xs font-bold text-slate-400 uppercase">Timecard</span>
+                    </label>
+                    
+                    <div class="flex flex-col items-end">
+                         <span class="text-[10px] font-bold text-slate-500 uppercase">Hours</span>
+                         <input type="number" value="${weekData.hoursWorked || ''}" 
+                            onchange="window.updatePayroll('${c.id}', 'hours', this.value)"
+                            class="w-20 bg-slate-900 border border-slate-700 rounded p-1 text-right text-sm text-white focus:border-emerald-500 outline-none" placeholder="0.0">
+                    </div>
+                    
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" onchange="window.updatePayroll('${c.id}', 'ukg', this.checked)" 
+                            class="w-5 h-5 rounded border-slate-600 bg-slate-800 text-purple-500 focus:ring-purple-900" 
+                            ${weekData.ukgVerified ? 'checked' : ''}>
+                        <span class="text-xs font-bold text-slate-400 uppercase">UKG</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- DROPDOWN -->
+            <div id="payroll-details-${c.id}" class="hidden border-t border-slate-800 pt-4 mt-2">
+                 <!-- Contract Stats -->
+                 <div class="grid grid-cols-2 gap-4 mb-4 bg-slate-900/50 p-3 rounded">
+                    <div>
+                        <label class="block text-[10px] text-slate-500 uppercase mb-1">Contract Hours</label>
+                        <input type="number" value="${payrollData.contractHours || ''}" 
+                            onchange="window.updatePayrollMeta('${c.id}', 'contractHours', this.value)"
+                            class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-slate-300 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-500 uppercase mb-1">Est. Weekly Margin</label>
+                        <input type="number" value="${payrollData.weeklyMarginEst || ''}" 
+                            onchange="window.updatePayrollMeta('${c.id}', 'weeklyMarginEst', this.value)"
+                            class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-slate-300 text-xs">
+                    </div>
+                 </div>
+                 
+                 <!-- History -->
+                 <div class="space-y-4 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                    ${renderPayrollHistory(c, payrollData)}
+                 </div>
+            </div>
+        `;
+        list.appendChild(card);
+    });
+
+    document.getElementById('weekTotalMargin').textContent = `$${weekTotal.toFixed(2)}`;
+    // TODO: Period Total
+    calculatePeriodTotal(activeCandidates);
+}
+
+function renderPayrollHistory(c, data) {
+    if (!data.weeks) return '<p class="text-xs text-slate-500 italic">No history yet.</p>';
+
+    // Group by Period
+    const history = {}; // PeriodId -> { totalMargin: 0, weeks: [] }
+
+    Object.keys(data.weeks).sort().reverse().forEach(dateKey => {
+        const info = getPeriodInfo(dateKey);
+        if (!history[info.period]) history[info.period] = { totalMargin: 0, weeks: [] };
+
+        const wData = data.weeks[dateKey];
+        history[info.period].totalMargin += (wData.calculatedMargin || 0);
+        history[info.period].weeks.push({ date: dateKey, info, ...wData });
+    });
+
+    let html = '';
+    Object.keys(history).sort((a, b) => b - a).forEach(pId => {
+        const pGroup = history[pId];
+        html += `
+            <div class="mb-2">
+                <div class="flex justify-between items-center bg-slate-800/80 px-3 py-1.5 rounded-t border-b border-slate-700">
+                    <span class="text-xs font-bold text-slate-300">Period ${pId}</span>
+                    <span class="text-xs font-mono text-emerald-400">$${pGroup.totalMargin.toFixed(2)}</span>
+                </div>
+                <div class="bg-slate-900/30 rounded-b p-2 space-y-1">
+                    ${pGroup.weeks.map(w => `
+                        <div class="flex justify-between text-[10px] text-slate-400">
+                            <span>${w.info.label} (${w.date})</span>
+                            <span class="font-mono">${w.hoursWorked} hrs | $${(w.calculatedMargin || 0).toFixed(0)}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    });
+    return html;
+}
+
+function calculatePeriodTotal(candidatesList) {
+    // Current Payroll Date determines the period we want to sum?
+    // "I also want to be able to see ... period total margin at the top of the tab"
+    // Does this mean the period OF the currently viewed week? Yes, implied.
+
+    const currentPeriodInfo = getPeriodInfo(formatDateKey(currentPayrollDate));
+    if (!currentPeriodInfo.period) {
+        document.getElementById('periodTotalMargin').textContent = "$0.00";
+        return;
+    }
+
+    let total = 0;
+    candidatesList.forEach(c => {
+        const weeks = c.payroll?.weeks || {};
+        Object.keys(weeks).forEach(dateKey => {
+            const inf = getPeriodInfo(dateKey);
+            if (inf.period === currentPeriodInfo.period) {
+                total += (weeks[dateKey].calculatedMargin || 0);
+            }
+        });
+    });
+
+    document.getElementById('periodTotalMargin').textContent = `$${total.toFixed(2)}`;
+}
+
+window.togglePayrollDetails = function (id) {
+    const el = document.getElementById(`payroll-details-${id}`);
+    if (el.classList.contains('hidden')) el.classList.remove('hidden');
+    else el.classList.add('hidden');
+}
+
+window.updatePayroll = async function (id, field, value) {
+    // 1. Get Candidate
+    // 2. data.payroll.weeks[currentDateKey] or init
+    // 3. Update field
+    // 4. Recalculate Margin
+
+    const c = candidates.find(x => x.id === id);
+    if (!c) return;
+
+    const weekKey = formatDateKey(currentPayrollDate);
+    const payroll = c.payroll || { weeklyMarginEst: 0, contractHours: 0, weeks: {} };
+    if (!payroll.weeks) payroll.weeks = {};
+    if (!payroll.weeks[weekKey]) payroll.weeks[weekKey] = { timecardProcessed: false, hoursWorked: 0, ukgVerified: false, calculatedMargin: 0 };
+
+    const wData = payroll.weeks[weekKey];
+
+    if (field === 'timecard') wData.timecardProcessed = value;
+    if (field === 'ukg') wData.ukgVerified = value;
+    if (field === 'hours') {
+        wData.hoursWorked = parseFloat(value) || 0;
+        // Calc Margin: (Est / Contract) * Actual
+        const rate = (parseFloat(payroll.weeklyMarginEst) || 0) / (parseFloat(payroll.contractHours) || 1); // Avoid div 0
+        wData.calculatedMargin = rate * wData.hoursWorked;
+    }
+
+    // Save
+    try {
+        const docRef = doc(db, 'artifacts', appId, 'users', c.ownerId || currentUser.uid, 'candidates', id);
+        await updateDoc(docRef, { payroll: payroll });
+        // Optimistic Update
+        c.payroll = payroll;
+        renderPayrollView(); // Refresh totals and UI
+    } catch (e) { console.error(e); showToast("Error saving payroll"); }
+}
+
+window.updatePayrollMeta = async function (id, field, value) {
+    const c = candidates.find(x => x.id === id);
+    if (!c) return;
+
+    const payroll = c.payroll || { weeklyMarginEst: 0, contractHours: 0, weeks: {} };
+    payroll[field] = parseFloat(value) || 0;
+
+    // Should we re-calc current week margin? Maybe not automatically, user might just be setting up.
+    // Ideally yes, if hours exist.
+    const weekKey = formatDateKey(currentPayrollDate);
+    if (payroll.weeks && payroll.weeks[weekKey]) {
+        const wData = payroll.weeks[weekKey];
+        const rate = (parseFloat(payroll.weeklyMarginEst) || 0) / (parseFloat(payroll.contractHours) || 1);
+        wData.calculatedMargin = rate * (wData.hoursWorked || 0);
+    }
+
+    try {
+        const docRef = doc(db, 'artifacts', appId, 'users', c.ownerId || currentUser.uid, 'candidates', id);
+        await updateDoc(docRef, { payroll: payroll });
+        c.payroll = payroll;
+        renderPayrollView();
+    } catch (e) { console.error(e); }
+}
 
 // --- 3. UI INTERACTIONS ---
 document.addEventListener('DOMContentLoaded', () => {
