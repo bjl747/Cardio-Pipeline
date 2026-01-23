@@ -332,12 +332,13 @@ function updateTabs() {
     const btnMine = document.getElementById('tabMine');
     const btnTeam = document.getElementById('tabTeam');
     const btnLicenses = document.getElementById('tabLicenses');
+    const btnPayroll = document.getElementById('tabPayroll');
 
     if (!btnMine || !btnTeam || !btnLicenses) return;
 
     // Reset All
-    [btnMine, btnTeam, btnLicenses].forEach(btn => {
-        btn.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-slate-500 hover:text-slate-300 border-b-2 border-transparent hover:border-slate-800 transition-all";
+    [btnMine, btnTeam, btnLicenses, btnPayroll].forEach(btn => {
+        if (btn) btn.className = "text-xs font-bold uppercase tracking-wider px-6 py-3 text-slate-500 hover:text-slate-300 border-b-2 border-transparent hover:border-slate-800 transition-all";
     });
 
     if (currentView === 'mine') {
