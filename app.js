@@ -457,55 +457,78 @@ function updatePayrollHeader() {
 
 function renderPayrollView() {
     const list = document.getElementById('payrollList');
+    const formersList = document.getElementById('formersList');
+    const formersContainer = document.getElementById('formersContainer');
+
     list.innerHTML = '';
+    formersList.innerHTML = '';
 
     const weekKey = formatDateKey(currentPayrollDate);
+    // Calc week start (Sunday before)
+    const weekStart = new Date(currentPayrollDate);
+    weekStart.setDate(weekStart.getDate() - 6);
+    const weekStartStr = formatDateKey(weekStart);
+    const weekEndStr = formatDateKey(currentPayrollDate); // Saturday
 
-    // Filter Candidates: Placed AND Active during this week
-    // Active means: contractStart <= currentPayrollDate AND contractEnd >= currentPayrollDate (roughly)
+    // 1. Separate Active vs Former
+    // Active: status=Placed AND (start <= Sat AND end >= Sun)
+    // Former: status=Placed AND (end < Sun)    
+    const activeCandidates = [];
+    const formerCandidates = [];
 
-    const activeCandidates = candidates.filter(c => {
-        if (c.status !== 'Placed' || !c.contractStart || !c.contractEnd) return false;
-        // Check overlap
-        // We use currentPayrollDate (Saturday) as the check point.
-        // If they started on or before this Saturday AND ended on or after the Sunday of this week?
-        // Let's keep it simple: Start <= Saturday AND End >= Sunday of this week (Start of week)
+    candidates.forEach(c => {
+        if (c.status !== 'Placed' || !c.contractStart || !c.contractEnd) return;
 
-        const weekStart = new Date(currentPayrollDate);
-        weekStart.setDate(weekStart.getDate() - 6);
-        const weekStartStr = formatDateKey(weekStart);
-        const weekEndStr = formatDateKey(currentPayrollDate);
-
-        return c.contractStart <= weekEndStr && c.contractEnd >= weekStartStr;
+        // Active Logic
+        if (c.contractStart <= weekEndStr && c.contractEnd >= weekStartStr) {
+            activeCandidates.push(c);
+        } else if (c.contractEnd < weekStartStr) {
+            // Former Logic: Contract ended before this week started
+            formerCandidates.push(c);
+        }
     });
 
+    // Sort
     activeCandidates.sort((a, b) => a.fullName.localeCompare(b.fullName));
+    formerCandidates.sort((a, b) => a.fullName.localeCompare(b.fullName));
 
+    // Render Active
     if (activeCandidates.length === 0) {
         list.innerHTML = '<div class="text-center text-slate-500 py-10">No active travelers for this week.</div>';
-        // Reset totals
-        document.getElementById('weekTotalMargin').textContent = "$0.00";
-        // Period total needs to be calculated regardless of who is visible? 
-        // Or only for visible? "For each recruiter... show their travelers"
-        // I will assume totals are based on the currently filtered list (Team vs Mine).
-        document.getElementById('periodTotalMargin').textContent = "$0.00";
-        return;
+    } else {
+        renderPayrollCards(activeCandidates, list, weekKey);
     }
 
-    let weekTotal = 0;
+    // Render Formers
+    if (formerCandidates.length > 0) {
+        formersContainer.classList.remove('hidden');
+        renderPayrollCards(formerCandidates, formersList, weekKey, true);
+    } else {
+        formersContainer.classList.add('hidden');
+    }
 
-    activeCandidates.forEach(c => {
+    // Totals logic (Only Active? Or both? User probably means Active Totals, but let's confirm.
+    // Usually standard reports separate active margin from residual/adjustments.
+    // I'll calculate totals only for ACTIVE for now to start clean.)
+    calculateTotals(activeCandidates, weekKey);
+}
+
+function renderPayrollCards(candidateList, container, weekKey, isFormer = false) {
+    candidateList.forEach(c => {
         const payrollData = c.payroll || {};
         const weeks = payrollData.weeks || {};
         const weekData = weeks[weekKey] || { timecardProcessed: false, hoursWorked: 0, ukgVerified: false, calculatedMargin: 0 };
 
-        weekTotal += (weekData.calculatedMargin || 0);
-
-        // Status Color: Green if Timecard AND Hours > 0. Else Red.
+        // Status Color
         const isGreen = weekData.timecardProcessed && weekData.hoursWorked > 0;
-        const statusClass = isGreen
+        let statusClass = isGreen
             ? "border-l-4 border-l-emerald-500 bg-emerald-900/10"
             : "border-l-4 border-l-red-500 bg-red-900/10";
+
+        // If former, maybe make it duller?
+        if (isFormer) {
+            statusClass = "border-l-4 border-l-slate-600 bg-slate-900/30 grayscale-[50%]";
+        }
 
         const card = document.createElement('div');
         card.className = `bg-[#0f172a] border border-slate-800 rounded p-4 ${statusClass} flex flex-col gap-4`;
@@ -513,7 +536,7 @@ function renderPayrollView() {
         card.innerHTML = `
             <div class="flex justify-between items-center cursor-pointer" onclick="window.togglePayrollDetails('${c.id}')">
                 <div>
-                    <h3 class="font-bold text-slate-200 text-lg">${c.fullName}</h3>
+                    <h3 class="font-bold text-slate-200 text-lg ${isFormer ? 'text-slate-400' : ''}">${c.fullName} ${isFormer ? '(Former)' : ''}</h3>
                     <p class="text-[10px] text-slate-500 uppercase">${c.credentials || 'RT'} - ${c.ownerName || 'My Candidate'}</p>
                 </div>
                 <div class="flex items-center gap-6" onclick="event.stopPropagation()">
@@ -564,12 +587,20 @@ function renderPayrollView() {
                  </div>
             </div>
         `;
-        list.appendChild(card);
+        container.appendChild(card);
+    });
+}
+
+function calculateTotals(activeList, weekKey) {
+    let weekTotal = 0;
+    activeList.forEach(c => {
+        const wData = c.payroll?.weeks?.[weekKey];
+        if (wData) weekTotal += (wData.calculatedMargin || 0);
     });
 
     document.getElementById('weekTotalMargin').textContent = `$${weekTotal.toFixed(2)}`;
-    // TODO: Period Total
-    calculatePeriodTotal(activeCandidates);
+    // Period Total for Active
+    calculatePeriodTotal(activeList);
 }
 
 function renderPayrollHistory(c, data) {
