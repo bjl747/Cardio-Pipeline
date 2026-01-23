@@ -478,13 +478,13 @@ function renderPayrollView() {
 
     candidates.forEach(c => {
         // Inclusion Logic:
-        // 1. Must have valid contract dates.
+        // 1. Must have valid contract START.
         // 2. Must be EITHER:
         //    a) Currently 'Placed' (Active)
         //    b) OR have Payroll History (Existing Data)
         //    c) OR be Hidden (Soft Deleted) - implied by (b) usually, but we want to be sure.
 
-        if (!c.contractStart || !c.contractEnd) return;
+        if (!c.contractStart) return;
 
         const hasPayroll = c.payroll && c.payroll.weeks && Object.keys(c.payroll.weeks).length > 0;
         const shouldInclude = c.status === 'Placed' || hasPayroll;
@@ -492,9 +492,14 @@ function renderPayrollView() {
         if (!shouldInclude) return;
 
         // Active Logic for THIS week
-        if (c.contractStart <= weekEndStr && c.contractEnd >= weekStartStr) {
+        // Treated missing contractEnd as "Active Forever" -> so only check Start
+        // If there IS an end date, check if it Ended before the week started.
+
+        const isEnded = c.contractEnd && c.contractEnd < weekStartStr;
+
+        if (c.contractStart <= weekEndStr && !isEnded) {
             activeCandidates.push(c);
-        } else if (c.contractEnd < weekStartStr) {
+        } else if (isEnded) {
             // Former Logic: Contract ended before this week started
             formerCandidates.push(c);
         }
@@ -542,31 +547,49 @@ function renderPayrollCards(candidateList, container, weekKey, isFormer = false)
             statusClass = "border-l-4 border-l-slate-600 bg-slate-900/30 grayscale-[50%]";
         }
 
+        // No Timecard Styling
+        if (weekData.noTimecard) {
+            statusClass = "border-l-4 border-l-slate-600 bg-slate-800/50 opacity-60 grayscale";
+        }
+
         const card = document.createElement('div');
-        card.className = `bg-[#0f172a] border border-slate-800 rounded p-4 ${statusClass} flex flex-col gap-4`;
+        card.className = `bg-[#0f172a] border border-slate-800 rounded p-4 ${statusClass} flex flex-col gap-4 transition-all`;
 
         card.innerHTML = `
             <div class="flex justify-between items-center cursor-pointer" onclick="window.togglePayrollDetails('${c.id}')">
                 <div>
-                    <h3 class="font-bold text-slate-200 text-lg ${isFormer ? 'text-slate-400' : ''}">${c.fullName} ${isFormer ? '(Former)' : ''}</h3>
+                    <h3 class="font-bold text-slate-200 text-lg ${isFormer ? 'text-slate-400' : ''}">
+                        ${c.fullName} 
+                        ${isFormer ? '<span class="text-xs text-slate-500">(Former)</span>' : ''}
+                        ${weekData.noTimecard ? '<span class="ml-2 text-xs font-bold text-slate-400 border border-slate-600 px-1 rounded">NO TIMECARD</span>' : ''}
+                    </h3>
                     <p class="text-[10px] text-slate-500 uppercase">${c.credentials || 'RT'} - ${c.ownerName || 'My Candidate'}</p>
                 </div>
                 <div class="flex items-center gap-6" onclick="event.stopPropagation()">
-                    <label class="flex items-center gap-2 cursor-pointer">
+                    <label class="flex items-center gap-1.5 cursor-pointer" title="No Timecard / Did Not Work">
+                        <input type="checkbox" onchange="window.updatePayroll('${c.id}', 'noTimecard', this.checked)" 
+                            class="w-4 h-4 rounded border-slate-600 bg-slate-800 text-slate-400 focus:ring-slate-700" 
+                            ${weekData.noTimecard ? 'checked' : ''}>
+                        <span class="text-[10px] font-bold text-slate-500 uppercase">No TC</span>
+                    </label>
+
+                    <div class="h-8 w-px bg-slate-800 mx-2"></div>
+
+                    <label class="flex items-center gap-2 cursor-pointer ${weekData.noTimecard ? 'opacity-30 pointer-events-none' : ''}">
                         <input type="checkbox" onchange="window.updatePayroll('${c.id}', 'timecard', this.checked)" 
                             class="w-5 h-5 rounded border-slate-600 bg-slate-800 text-emerald-500 focus:ring-emerald-900" 
                             ${weekData.timecardProcessed ? 'checked' : ''}>
                         <span class="text-xs font-bold text-slate-400 uppercase">Timecard</span>
                     </label>
                     
-                    <div class="flex flex-col items-end">
+                    <div class="flex flex-col items-end ${weekData.noTimecard ? 'opacity-30 pointer-events-none' : ''}">
                          <span class="text-[10px] font-bold text-slate-500 uppercase">Hours</span>
                          <input type="number" value="${weekData.hoursWorked || ''}" 
                             onchange="window.updatePayroll('${c.id}', 'hours', this.value)"
                             class="w-20 bg-slate-900 border border-slate-700 rounded p-1 text-right text-sm text-white focus:border-emerald-500 outline-none" placeholder="0.0">
                     </div>
                     
-                    <label class="flex items-center gap-2 cursor-pointer">
+                    <label class="flex items-center gap-2 cursor-pointer ${weekData.noTimecard ? 'opacity-30 pointer-events-none' : ''}">
                         <input type="checkbox" onchange="window.updatePayroll('${c.id}', 'ukg', this.checked)" 
                             class="w-5 h-5 rounded border-slate-600 bg-slate-800 text-purple-500 focus:ring-purple-900" 
                             ${weekData.ukgVerified ? 'checked' : ''}>
@@ -702,6 +725,13 @@ window.updatePayroll = async function (id, field, value) {
 
     if (field === 'timecard') wData.timecardProcessed = value;
     if (field === 'ukg') wData.ukgVerified = value;
+    if (field === 'noTimecard') {
+        wData.noTimecard = value;
+        if (value === true) {
+            wData.hoursWorked = 0; // Reset hours if No Timecard ? Or keep them? User implied "didn't work".
+            wData.calculatedMargin = 0;
+        }
+    }
     if (field === 'hours') {
         wData.hoursWorked = parseFloat(value) || 0;
         // Calc Margin: (Est / Contract) * Actual
