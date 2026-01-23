@@ -477,9 +477,21 @@ function renderPayrollView() {
     const formerCandidates = [];
 
     candidates.forEach(c => {
-        if (c.status !== 'Placed' || !c.contractStart || !c.contractEnd) return;
+        // Inclusion Logic:
+        // 1. Must have valid contract dates.
+        // 2. Must be EITHER:
+        //    a) Currently 'Placed' (Active)
+        //    b) OR have Payroll History (Existing Data)
+        //    c) OR be Hidden (Soft Deleted) - implied by (b) usually, but we want to be sure.
 
-        // Active Logic
+        if (!c.contractStart || !c.contractEnd) return;
+
+        const hasPayroll = c.payroll && c.payroll.weeks && Object.keys(c.payroll.weeks).length > 0;
+        const shouldInclude = c.status === 'Placed' || hasPayroll;
+
+        if (!shouldInclude) return;
+
+        // Active Logic for THIS week
         if (c.contractStart <= weekEndStr && c.contractEnd >= weekStartStr) {
             activeCandidates.push(c);
         } else if (c.contractEnd < weekStartStr) {
@@ -857,14 +869,22 @@ window.deleteCandidate = async function (id) {
         const c = candidates.find(x => x.id === id);
         if (!c) return;
 
-        // If I am admin (BJ), I can delete anyone. If not, only my own.
-        // The rule is also enforced on backend, but we need the correct PATH.
-        // If ownerId is missing, assume it's mine (old logic).
         const targetOwnerId = c.ownerId || currentUser.uid;
+        const docRef = doc(db, 'artifacts', appId, 'users', targetOwnerId, 'candidates', id);
+
+        // Check for Payroll History
+        const hasPayroll = c.payroll && c.payroll.weeks && Object.keys(c.payroll.weeks).length > 0;
 
         try {
-            await deleteDoc(doc(db, 'artifacts', appId, 'users', targetOwnerId, 'candidates', id));
-            showToast("Candidate Deleted");
+            if (hasPayroll) {
+                // Soft Delete: Hide from Pipeline, Keep in Payroll
+                await updateDoc(docRef, { hidden: true });
+                showToast("Archived (Payroll Preserved)");
+            } else {
+                // Hard Delete: No payroll history, safe to remove
+                await deleteDoc(docRef);
+                showToast("Candidate Deleted");
+            }
         } catch (e) {
             console.error("Delete failed:", e);
             showToast(`Delete Failed: ${e.message}`);
@@ -896,14 +916,17 @@ function renderList() {
     const listContainer = document.getElementById('candidateList');
     listContainer.innerHTML = '';
 
-    if (candidates.length === 0) {
+    // Filter out hidden (Soft Deleted) candidates from Pipeline View
+    const visibleCandidates = candidates.filter(c => !c.hidden);
+
+    if (visibleCandidates.length === 0) {
         listContainer.innerHTML = '<div class="text-slate-500 text-center py-10">No candidates found.</div>';
         return;
     }
 
-    candidates.sort((a, b) => new Date(a.availDate) - new Date(b.availDate));
+    visibleCandidates.sort((a, b) => new Date(a.availDate) - new Date(b.availDate));
 
-    candidates.forEach(c => {
+    visibleCandidates.forEach(c => {
         const glowClass = getTrafficLightGlow(c.availDate);
         let dateBadgeClass = "";
         if (glowClass === 'glow-red') dateBadgeClass = "text-red-400 border-red-500/50 bg-red-500/10";
