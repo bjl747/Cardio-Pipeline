@@ -613,6 +613,15 @@ function renderList() {
                                         <div class="w-9 h-5 bg-slate-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-lime-500"></div>
                                     </label>
                                 </div>
+                                
+                                <div class="grid grid-cols-2 gap-2 mt-2">
+                                    <button onclick="window.toggleExtensionRequested('${c.id}')" class="text-[10px] font-bold uppercase py-2 rounded border transition ${c.extensionRequested ? 'bg-amber-500/20 text-amber-400 border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.2)]' : 'bg-slate-800 text-slate-500 border-slate-700 hover:border-slate-500'}">
+                                        Extension Requested
+                                    </button>
+                                    <button onclick="window.toggleExtensionSubmitted('${c.id}')" class="text-[10px] font-bold uppercase py-2 rounded border transition ${c.extensionSubmitted ? 'bg-indigo-500/20 text-indigo-400 border-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.2)]' : 'bg-slate-800 text-slate-500 border-slate-700 hover:border-slate-500'}">
+                                        Submitted
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -729,6 +738,24 @@ window.toggleExtension = async function (id) {
         const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'candidates', id);
         await updateDoc(docRef, { extensionInterest: !c.extensionInterest });
     } catch (e) { console.error(e); }
+};
+
+window.toggleExtensionRequested = async function (id) {
+    const c = candidates.find(cand => cand.id === id);
+    if (!c) return;
+    try {
+        const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'candidates', id);
+        await updateDoc(docRef, { extensionRequested: !c.extensionRequested });
+    } catch (e) { console.error("Error toggling requested:", e); }
+};
+
+window.toggleExtensionSubmitted = async function (id) {
+    const c = candidates.find(cand => cand.id === id);
+    if (!c) return;
+    try {
+        const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'candidates', id);
+        await updateDoc(docRef, { extensionSubmitted: !c.extensionSubmitted });
+    } catch (e) { console.error("Error toggling submitted:", e); }
 };
 
 // --- SMART DATE LOGIC ---
