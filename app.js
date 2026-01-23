@@ -553,6 +553,8 @@ function renderList() {
                             <span class="text-[10px] font-bold text-slate-900 bg-slate-400 px-1.5 py-0.5 rounded uppercase">${c.credential}</span>
                             <span class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">${displayStatus}</span>
                             ${showExtBadge ? '<span class="ext-badge">OPEN TO EXTENSION</span>' : ''}
+                            ${c.extensionRequested ? '<span class="text-[9px] font-bold text-amber-500 border border-amber-600/50 bg-amber-900/40 px-1.5 py-0.5 rounded tracking-wide">EXT REQ</span>' : ''}
+                            ${c.extensionSubmitted ? '<span class="text-[9px] font-bold text-indigo-400 border border-indigo-500/50 bg-indigo-900/40 px-1.5 py-0.5 rounded tracking-wide">SUBMITTED</span>' : ''}
                         </div>
                     </div>
                 </div>
